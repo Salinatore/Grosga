@@ -3,7 +3,6 @@
 #define MAX 5
 
 int main(){
-    /*
     int numero = 75;
     char lettera = 'k';
 
@@ -19,7 +18,6 @@ int main(){
     float numero_float = 5.232;
 
     printf("numero float: %.1f", numero_float);
-    */
 
     int i = MAX;
 
