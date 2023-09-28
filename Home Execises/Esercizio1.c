@@ -1,4 +1,4 @@
-/**
+/*
  * @file Esercizio1.c
  * @author Filo, Gardo, Rossi
  * @brief 
@@ -6,10 +6,10 @@
  * @date 2023-09-25
  * 
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 
-/**
+/*
 * %TODO
 * Scrivere un programma C che dichiari una variabile per ogni tipo studiato (usando anche i qualificatori short, long, signed e unsigned), 
 * ne stampi il valore e l’occupazione di memoria in byte. Utilizzare TUTTI gli argomenti della funzione printf() studiati e TUTTE le diverse varianti 
