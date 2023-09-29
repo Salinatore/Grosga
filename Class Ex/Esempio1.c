@@ -3,25 +3,26 @@
 #define MAX 5
 
 int main(){
-        int numero = 75;
-        char lettera = 'k';
 
-                printf("%d\n", numero);
-printf("%c\n", lettera);
+    //parte 1
+    int numero = 75;
+    char lettera = 'k';
 
-printf("%c\n", numero);
-printf("%d\n", lettera);
+    printf("%d\n", numero);
+    printf("%c\n", lettera);
+    printf("%c\n", numero);
+    printf("%d\n", lettera);
 
-//parte2
-printf("\nparte 2:");
+    //parte2
+    printf("\nparte 2:");
 
-float numero_float = 5.232;
+    float numero_float = 5.232;
 
-printf("numero float: %.1f", numero_float);
+    printf("numero float: %.1f", numero_float);
 
-int i = MAX;
+    int i = MAX;
 
-printf("MAX: %d", i);
+    printf("MAX: %d", i);
 
-return 0;
+    return 0;
 }
