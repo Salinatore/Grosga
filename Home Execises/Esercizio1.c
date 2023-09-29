@@ -28,13 +28,13 @@ int main(){
     printf("\nvalore:%c -- dimensione:%d", c, sizeof(c));
     printf("\nvalore:%d -- dimensione:%d", i, sizeof(i));
     printf("\nvalore:%d -- dimensione:%d", si, sizeof(si));
-    printf("\nvalore:%d -- dimensione:%d", li, sizeof(li));
-    printf("\nvalore:%d -- dimensione:%d", uc, sizeof(uc));
+    printf("\nvalore:%ld -- dimensione:%d", li, sizeof(li));
+    printf("\nvalore:%c -- dimensione:%d", uc, sizeof(uc));
     printf("\nvalore:%d -- dimensione:%d", ui, sizeof(ui));
     printf("\nvalore:%d -- dimensione:%d", ul, sizeof(ul));
-    printf("\nvalore:%d -- dimensione:%d", f, sizeof(f));
-    printf("\nvalore:%d -- dimensione:%d", d, sizeof(d));
-    printf("\nvalore:%d -- dimensione:%d", ld, sizeof(ld));
+    printf("\nvalore:%f -- dimensione:%d", f, sizeof(f));
+    printf("\nvalore:%f -- dimensione:%d", d, sizeof(d));
+    printf("\nvalore:%f -- dimensione:%d", ld, sizeof(ld));
     printf("\n\n");
 
     //stampo usando i vari modificatori e il numero dei caratteri che usano
