@@ -12,20 +12,20 @@ Exercise number: 1
 
 int main(){
     //declaration-->
-    char c;
-    int i = 27, l = 5;
-    short int si;
-    long int li;
-    unsigned char uc;
-    unsigned int ui;
-    unsigned long ul;
-    float f;
-    double d;
-    long double ld;
+    char c = -1;
+    int i = 27, l;
+    short int si = -1;
+    long int li = -1;
+    unsigned char uc = 1;
+    unsigned int ui = 1;
+    unsigned long ul = 1;
+    float f = -1;
+    double d = -1;
+    long double ld = -1;
 
     //stampo variabili con le dimensioni che occupano
     printf("Stampo variabili con le dimensioni che occupano-->");
-    printf("\nvalore:%d -- dimensione:%d", c, sizeof(c));
+    printf("\nvalore:%c -- dimensione:%d", c, sizeof(c));
     printf("\nvalore:%d -- dimensione:%d", i, sizeof(i));
     printf("\nvalore:%d -- dimensione:%d", si, sizeof(si));
     printf("\nvalore:%d -- dimensione:%d", li, sizeof(li));
