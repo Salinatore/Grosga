@@ -1,22 +1,22 @@
-/**
- * @file Esercizio2.c
- * @author Filo, Gardo, Rossi
- * @brief 
- * @version 0.1
- * @date 2023-09-25
- * 
- * @copyright Copyright (c) 2023
- * 
- */
+/*
 
-/**
- * ESERCIZIO 2
- * Scrivere un programma C che chieda all'utente di inserire il numero di miglia percorse e il numero di galloni di benzina consumati. 
- * Il programma deve poi calcolare e visualizzare il valore di miglia per gallone usando due cifre decimali. 
- * Successivamente, il programma deve convertire il valore miglia per gallone in litri per 100 km, come si usa per esprimere il consumo di carburante in Europa,
- * e visualizzare il risultato, usando 3 cifre decimali. Usare costanti simboliche per i due fattori di conversione. Commentare adeguatamente il programma.
- * 
- */
+Alessandro Gardini n. matricola: 0001114867
+Filippo Greppi n. matricola:
+Lorenzo Rossi n. matricola:
+
+Exercise number:
+
+*/
+
+/*
+
+ESERCIZIO 2
+Scrivere un programma C che chieda all'utente di inserire il numero di miglia percorse e il numero di galloni di benzina consumati.
+Il programma deve poi calcolare e visualizzare il valore di miglia per gallone usando due cifre decimali.
+Successivamente, il programma deve convertire il valore miglia per gallone in litri per 100 km, come si usa per esprimere il consumo di carburante in Europa,
+e visualizzare il risultato, usando 3 cifre decimali. Usare costanti simboliche per i due fattori di conversione. Commentare adeguatamente il programma.
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
