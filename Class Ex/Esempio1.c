@@ -2,7 +2,7 @@
 
 #define MAX 5
 
-int main()
+int main(){
         int numero = 75;
         char lettera = 'k';
 
