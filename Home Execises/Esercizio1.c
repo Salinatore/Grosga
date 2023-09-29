@@ -49,7 +49,7 @@ int main() {
     printf("\nvalore:%d dimensione:%d", ld, sizeof(ld) );
     l = printf("\n %-d,numero di caratteri %d", i, l ); //da finire
     l = printf("\n %+d,numero di caratteri %d", i, l);
-    l = printf("\n % d", i, l);
+    l = printf("\n % d", i, l );
     printf("\n %#d");
     printf("\n %0d");
     printf("\n %10d");
