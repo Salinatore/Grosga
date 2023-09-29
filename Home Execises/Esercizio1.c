@@ -23,14 +23,37 @@
 #include <stdlib.h>
 
 
+#include <stdio.h>
+
 int main() {
-    int intero;
-    char lettera;
-    float decimale;
-    double percentuale;
+    char c;
+    int i=27, l=5;
+    short int si;
+    long int li;
+    unsigned char uc;
+    unsigned int ui;
+    unsigned long ul;
+    float f;
+    double d;
+    long double ld;
 
-
-    printf("Ciao");
-    system("pause");
+    printf("\n valore:%d dimensione:%d", c, sizeof(c) );
+    printf("\nvalore:%d dimensione:%d", i, sizeof(i) );
+    printf("\nvalore:%d dimensione:%d", si, sizeof(si) );
+    printf("\nvalore:%d dimensione:%d", li, sizeof(li) );
+    printf("\nvalore:%d dimensione:%d", uc, sizeof(uc) );
+    printf("\nvalore:%d dimensione:%d", ui, sizeof(ui) );
+    printf("\nvalore:%d dimensione:%d", ul, sizeof(ul) );
+    printf("\nvalore:%d dimensione:%d", f, sizeof(f) );
+    printf("\nvalore:%d dimensione:%d", d, sizeof(d) );
+    printf("\nvalore:%d dimensione:%d", ld, sizeof(ld) );
+    l = printf("\n %-d,numero di caratteri %d", i, l ); //da finire
+    l = printf("\n %+d,numero di caratteri %d", i, l);
+    l = printf("\n % d", i, l);
+    printf("\n %#d");
+    printf("\n %0d");
+    printf("\n %10d");
+    printf("\n %.10d");
+    printf("\n %ld");
     return 0;
 }
