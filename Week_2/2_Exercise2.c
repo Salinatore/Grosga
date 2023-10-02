@@ -8,7 +8,7 @@
  * il numero da indovinare è più grande; ha indovinato.
  * Scrivere una versione di programma in cui non c'è limite al numero di tentativi che l’utente può fare per indovinare il numero e scriverne un'altra in cui invece viene posto tale limite.
  * Il programma deve stampare il numero di tentativi fatti.
- * /
+ */
 
 #include <stdio.h>
 
