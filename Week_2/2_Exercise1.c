@@ -13,7 +13,7 @@
 int main() {
 
 
-
+ scanfolinif
 
 
 
