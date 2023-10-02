@@ -1,9 +1,8 @@
-/*Alessandro Gardini n. matricola: 0001114867
-Filippo Greppi n. matricola:
-Lorenzo Rossi n. matricola:
-
-Exercise number: 1
-
+/**
+ * @file Esercizio1.c
+ * @author Alessandro Gardini n. matricola: 0001114867, Filippo Greppi n. matricola: 0001114837, Lorenzo Rossi n. matricola: 0001114876
+ * @version 0.1
+ * @date 2023-10-01
 */
 
 #include <stdio.h>
@@ -66,7 +65,7 @@ int main() {
     printf("\n\n");
     
     //stampo usando i valori minimi e massimi di ogni tipo di variabile
-     printf("Stampo i valori minimi e massimi di ogni variabile-->");
+    printf("Stampo i valori minimi e massimi di ogni variabile-->");
     printf("\nCARATTERE");
     	printf("\n minimo: -128, massimo: 127");
     printf("\nINTERO");
