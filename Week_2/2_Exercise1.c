@@ -5,6 +5,7 @@
 * effect all’interno della stessa istruzione, quello che si ottiene quando le regole di conversione implicita sono applicate e quando si supera il range dei valori disponibili per un tipo di dato.
 *
 * Il programma deve poi mostrare l’utilizzo di tutte le funzioni matematiche della libreria math.h.
+*
 */
 
 #include <stdio.h>
@@ -14,8 +15,14 @@ int main() {
 
 
 
+    // stampa delle funzioni matemtiche di math.h
+    pritnf("\nRadice");
 
 
     printf("\n\n");
     return 0;
+}
+
+void get_libraryFunction() {
+
 }
