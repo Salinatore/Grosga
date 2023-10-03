@@ -23,7 +23,7 @@ int main() {
     printf("\nLe miglia per galloni sono: %.2f", mpg);
 
     // conversion (miles per gallon to L/100Km)
-    float lp100km = (gal * gal_to_lit) / (100 * mi * mi_to_km);
+    float lp100km = (100 * mi * mi_to_km) / (gal * gal_to_lit);
     printf("\nLitri per 100km: %.3f", lp100km);
 
     printf("\n\n");
