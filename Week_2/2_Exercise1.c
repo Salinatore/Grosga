@@ -12,7 +12,33 @@
 #include <math.h>
 
 int main() {
+    int n;
+    float f, decimale;
 
+    n = 3;
+    printf("\n%d", n);
+
+    n++;
+    printf("\n%d", n);
+
+    n--;
+    printf("\n%d", n);
+
+    n += 3;
+    printf("\n%d", n);
+
+    n -= 30;
+    printf("\n%d", n);
+
+    n *= -100;
+    printf("\n%d", n);
+
+    n /= 3;
+    printf("\n%d", n);
+
+    //casting
+    decimale = f - (int)f;
+    printf("\n%f", f);
 
 
     // stampa delle funzioni matemtiche di math.h
