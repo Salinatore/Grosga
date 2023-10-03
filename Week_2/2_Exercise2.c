@@ -47,7 +47,7 @@ int main() {
     do{
         max_try--;
         printf("il tuo numero è %d", )
-    } while(max_try>=0);
+    } while(max_try>=0)
 
     printf("\n\n");
     return 0;
