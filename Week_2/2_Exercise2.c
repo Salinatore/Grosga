@@ -11,11 +11,12 @@
  */
 
 #include <stdio.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
 
-    int n, min=0, max=0, max_try=-1;
+    int n, min=0, max=0, max_try=-1
 
     //controlla che l'intervallo inserito rispetti il vincolo 0<min<=max
     while(min<0 || min>=max) {
@@ -44,10 +45,15 @@ int main() {
         }
     }
 
+    srand(time(NULL));   // Initialization of srand
+    int r = rand();
+
     do{
         max_try--;
-        printf("il tuo numero è %d", )
-    } while(max_try>=0)
+        printf("Il tuo numero è %d?", r);
+
+
+    } while(max_try>=0);
 
     printf("\n\n");
     return 0;
