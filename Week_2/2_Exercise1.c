@@ -16,7 +16,7 @@ int main() {
 
 
     // stampa delle funzioni matemtiche di math.h
-    pritnf("\nRadice");
+    printf("\nRadice");
 
 
     printf("\n\n");
