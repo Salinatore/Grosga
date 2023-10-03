@@ -13,10 +13,24 @@
 #include <stdio.h>
 
 int main() {
+    int n, min=0, max=0;
 
+    //controlla che l'intervallo inserito rispetti il vincolo 0<min<=max
+    while(min<0 || min>=max) {
+        printf("\nInserisci un intervallo separato da una virgola (min,max): ");
+        scanf("%d,%d", &min, &max);
 
+        if(min<0 || min>=max)
+            printf("Il minimo non può essere più grande del massimo, rispetta il vincolo 0<min<=max!\n");
+    }
+    //controlla che n sia all'interno dell'intervallo, altrimenti richiedi il valore
+    while(n>=min && n>=max) {
+        printf("\nInserisci il numero da indovinare: ");
+        scanf("%d", &n);
 
-
+        if(n>=min && n>=max)
+            printf("Rispetta l'intervallo: %d<=numero<=%d\n", min, max);
+    }
 
     printf("\n\n");
     return 0;
