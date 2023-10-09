@@ -17,10 +17,49 @@
  * N.B.: i margini che definiscono i confini dei vari continenti sono decisi da voi
  */
 #include <stdio.h>
+#include <stdbool.h>
+#include <time.h>
+#include <math.h>
+
+
+bool guess(long double x, long double y);
+int xpTime(long start);
+int xpDifficulty();
 
 int main() {
     // Your code here
+    char game = 'y';
+    long double x, y, X, Y;
+    long time = time(NULL);
+
+
+
+    while(game == 'Y' || game == 'y') {
+
+        printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
+        scanf("%c", &game);
+
+        if(game != 'y' && game != 'Y' && game != 'N' && game != 'n')
+            printf("Inserisci Y (si) o n (no)\n\n");
+    }
+
+    printf("\nTerminato con successo ...");
 
     printf("\n\n");
     return 0;
+}
+
+bool guess(long double x, long double y) {
+
+
+    return true;
+}
+int xpTime(long start) {
+    long finish = time(NULL);
+    long result = finish - start;
+
+
+}
+int xpDifficulty() {
+
 }
