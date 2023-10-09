@@ -36,6 +36,10 @@ int main() {
 
     while(game == 'Y' || game == 'y') {
 
+
+
+
+        /** New Game **/
         printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
         scanf("%c", &game);
 
@@ -55,17 +59,22 @@ bool guess(long double x, long double y) {
 
     return true;
 }
+
+/** Restituisce i punti in base al tempo **/
 int xpTime(long start) {
     long finish = time(NULL);
-    double result = (double)finish - (double)start;
+    double result = (double)finish - (double)start; //delta tempo
 
     return velocita_Decadimento(result);
 }
+
 int xpDifficulty() {
 
+    return 0;
 }
+/** Funzione per il calcolo dei punti **/
 double velocita_Decadimento(double t) {
-    const double tolerance = 100000000000.0;
+    const double tolerance = 100000000000.0; // valore di grandezza dei punti
     double k = 0.1; //velocità decadimento
     return tolerance / (1 + k * t);
 }
