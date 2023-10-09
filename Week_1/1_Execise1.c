@@ -1,11 +1,13 @@
 /**
  * @file Esercizio1.c
  * @author Alessandro Gardini n. matricola: 0001114867, Filippo Greppi n. matricola: 0001114837, Lorenzo Rossi n. matricola: 0001114876
- * @version 0.1
+ * @version 0.2
  * @date 2023-10-01
 */
 
 #include <stdio.h>
+#include <limits.h>
+#include <float.h>
 
 int main() {
     //declaration-->
@@ -66,26 +68,26 @@ int main() {
     
     //stampo usando i valori minimi e massimi di ogni tipo di variabile
     printf("Stampo i valori minimi e massimi di ogni variabile-->");
-    printf("\nCARATTERE");
-    	printf("\n minimo: -128, massimo: 127");
+    printf("\nCARATTERE:");
+    	printf("%d", CHAR_BIT);
     printf("\nINTERO");
-    	printf("\n minimo: -32768, massimo: 32767");
+    	printf("\n minimo: %d", INT_MIN);
     printf("\nINTERO CORTO");
-    	printf("\n minimo: -32768, massimo: 32767");
+    	printf("\n minimo: %d", INT_MAX);
     printf("\nINTERO LUNGO");	
-    	printf("\n minimo: -2147483648, massimo: 2147483647");
+    	printf("\n minimo: %ld, massimo: %ld", LONG_MIN, LONG_MAX);
     printf("\nCARATTERE SENZA SEGNO");
-    	printf("\n minimo: 0, massimo: 255");
+        printf(": %d", UCHAR_MAX);
     printf("\nINTERO SENZA SEGNO");
-		printf("\n minimo: 0, massimo: 65535");
+        printf(": %d", UINT_MAX);
     printf("\nINTERO LUNGO SENZA SEGNO");
-		printf("\n minimo: 0, massimo: 4294967295");
+		printf(": %ld", ULONG_MAX);
 	printf("\nVARIABILE MOBILE CON PRECISIONE SINGOLA");
-		printf("\n minimo: 1.2x10^-38, massimo: 3.4x10^38");
+		printf("\n minimo: %f, massimo: %f", FLT_MIN, FLT_MAX);
     printf("\nVARIABILE MOBILE CON PRECISIONE DOPPIA");
-		printf("\n minimo: 2.2x10^-308, massimo: 1.8x10^308");
+		printf("\n minimo: %f, massimo: %f", DBL_MIN, DBL_MAX);
     printf("\nVARIABILE MOBILE CON PRECISIONE ESTESA");
-    	printf("\n minimo: 3.4x10^-4932, massimo: 1.1x10^4932");
+    	printf("\n minimo: %Lf, massimo: %Lf", LDBL_MIN, LDBL_MAX);
     
     printf("\n\n");
     return 0;
