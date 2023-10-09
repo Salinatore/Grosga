@@ -34,6 +34,7 @@ int main() {
     long game_time = time(NULL);
     int score = 0;
 
+    /** Game session */
     while(game == 'Y' || game == 'y') {
 
 
