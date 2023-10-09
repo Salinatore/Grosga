@@ -24,15 +24,15 @@
 
 bool guess(long double x, long double y);
 int xpTime(long start);
-int xpDifficulty();
+int xp_Difficulty();
+double velocita_Decadimento(double t);
 
 int main() {
     // Your code here
     char game = 'y';
     long double x, y, X, Y;
-    long time = time(NULL);
-
-
+    long game_time = time(NULL);
+    int score = 0;
 
     while(game == 'Y' || game == 'y') {
 
@@ -42,6 +42,7 @@ int main() {
         if(game != 'y' && game != 'Y' && game != 'N' && game != 'n')
             printf("Inserisci Y (si) o n (no)\n\n");
     }
+
 
     printf("\nTerminato con successo ...");
 
@@ -56,10 +57,15 @@ bool guess(long double x, long double y) {
 }
 int xpTime(long start) {
     long finish = time(NULL);
-    long result = finish - start;
+    double result = (double)finish - (double)start;
 
-
+    return velocita_Decadimento(result);
 }
 int xpDifficulty() {
 
+}
+double velocita_Decadimento(double t) {
+    const double tolerance = 100000000000.0;
+    double k = 0.1; //velocità decadimento
+    return tolerance / (1 + k * t);
 }
