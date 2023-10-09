@@ -79,15 +79,15 @@ int main() {
     printf("\nCARATTERE SENZA SEGNO");
         printf(": %d", UCHAR_MAX);
     printf("\nINTERO SENZA SEGNO");
-        printf(": %d", UINT_MAX);
+        printf(": %u", UINT_MAX);
     printf("\nINTERO LUNGO SENZA SEGNO");
-		printf(": %ld", ULONG_MAX);
+		printf(": %u", ULONG_MAX);
 	printf("\nVARIABILE MOBILE CON PRECISIONE SINGOLA");
-		printf("\n minimo: %f, massimo: %f", FLT_MIN, FLT_MAX);
+		printf("\n minimo: %e, massimo: %e", FLT_MIN, FLT_MAX);
     printf("\nVARIABILE MOBILE CON PRECISIONE DOPPIA");
-		printf("\n minimo: %f, massimo: %f", DBL_MIN, DBL_MAX);
+		printf("\n minimo: %e, massimo: %e", DBL_MIN, DBL_MAX);
     printf("\nVARIABILE MOBILE CON PRECISIONE ESTESA");
-    	printf("\n minimo: %Lf, massimo: %Lf", LDBL_MIN, LDBL_MAX);
+    	printf("\n minimo: %e, massimo: %e", LDBL_MIN, LDBL_MAX);
     
     printf("\n\n");
     return 0;
