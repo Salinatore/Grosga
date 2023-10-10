@@ -20,7 +20,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
-
+#include <stdlib.h>
 
 bool guess(long double x, long double y);
 int xpTime(long start);
@@ -28,18 +28,24 @@ int xp_Difficulty();
 double velocita_Decadimento(double t);
 
 int main() {
-    // Your code here
     char game = 'y';
-    long double x, y, X, Y;
     long game_time = time(NULL);
     int score = 0;
+    int meridiani = 0, paralleli = 0;
+
+    srand(time(NULL));
 
     /** Game session */
     while(game == 'Y' || game == 'y') {
 
+        //generazione meridiani
+        meridiani = rand()%91;
+        paralleli = rand()%181;
 
+        if(rand()%2 == 1) meridiani*(-1);
+        if(rand()%2 == 1) paralleli*(-1);
 
-
+        printf("Le coordinate sono queste: %d, %d", )
         /** New Game **/
         printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
         scanf("%c", &game);
@@ -73,6 +79,7 @@ int xpDifficulty() {
 
     return 0;
 }
+
 /** Funzione per il calcolo dei punti **/
 double velocita_Decadimento(double t) {
     const double tolerance = 100000000000.0; // valore di grandezza dei punti
