@@ -22,49 +22,36 @@
 #include <math.h>
 #include <stdlib.h>
 
+
 bool guess(long double x, long double y);
 int xpTime(long start);
 int xp_Difficulty();
 double velocita_Decadimento(double t);
 
-int main() {
-    char game = 'y';
-    long game_time = time(NULL);
-    int score = 0;
-    int meridiani = 0, paralleli = 0;
 
+int main() {
     srand(time(NULL));
+    char game = 'y';
+    int score = 0;
 
     /** Game session */
-    while(game == 'Y' || game == 'y') {
+     do {
+         long game_time = time(NULL);
 
-        //generazione meridiani
-        meridiani = rand()%91;
-        paralleli = rand()%181;
 
-        if(rand()%2 == 1) meridiani*(-1);
-        if(rand()%2 == 1) paralleli*(-1);
-
-        printf("Le coordinate sono queste: %d, %d", )
-        /** New Game **/
+         /** New Game **/
         printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
-        scanf("%c", &game);
+        scanf(" %c", &game);
 
-        if(game != 'y' && game != 'Y' && game != 'N' && game != 'n')
-            printf("Inserisci Y (si) o n (no)\n\n");
-    }
+        if(game != 'y' && game != 'Y' && game != 'N' && game != 'n') //alert
+            printf("Inserisci Y (si) o n (no)");
 
+    } while(game != 'N' && game != 'n');
 
     printf("\nTerminato con successo ...");
 
     printf("\n\n");
     return 0;
-}
-
-bool guess(long double x, long double y) {
-
-
-    return true;
 }
 
 /** Restituisce i punti in base al tempo **/
@@ -74,15 +61,20 @@ int xpTime(long start) {
 
     return velocita_Decadimento(result);
 }
+/** Funzione per il calcolo dei punti **/
+double velocita_Decadimento(double t) {
+    const double tolerance = 100000000000.0; // valore di grandezza dei punti
+    double k = 0.1; //velocità decadimento
+    return tolerance / (1 + k * t);
+}
 
 int xpDifficulty() {
 
     return 0;
 }
 
-/** Funzione per il calcolo dei punti **/
-double velocita_Decadimento(double t) {
-    const double tolerance = 100000000000.0; // valore di grandezza dei punti
-    double k = 0.1; //velocità decadimento
-    return tolerance / (1 + k * t);
+bool guess(long double x, long double y) {
+
+
+    return true;
 }
