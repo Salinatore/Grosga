@@ -45,6 +45,39 @@ int main() {
     n = (b++, c++);
     printf("\n%d", n);
 
+    if( n == 3 || b == 7);
+
+    if( n == 3 && b == 7);
+
+    if (n != b);
+
+    if(n < b);
+
+    if(n > b);
+
+    if(n <= b);
+
+    if(n >= b);
+
+    //bitwise
+    c = n & b;
+    printf("\n %d", c);
+
+    c = n | b;
+    printf("\n %d", c);
+
+    c = n ^ b;
+    printf("\n %d", c);
+
+    c = ~n;
+    printf("\n %d", c);
+
+    c = n << 2;
+    printf("\n %d", c);
+
+    c = n >> 2;
+    printf("\n %d", c);
+
     //casting
     decimale = f - (int)f;
     printf("\nStampa parte decimale: %f", decimale);
