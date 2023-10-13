@@ -20,10 +20,13 @@
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <ctype.h>
 
 #define max_lenght 80
 
-char guess(long double x, long double y);
+char* guess(long double x, long double y);
 int xpTime(long start);
 int xpDifficulty(long double x, long double y);
 double velocita_Decadimento(double t);
@@ -31,29 +34,43 @@ double velocita_Decadimento(double t);
 int main() {
     srand(time(NULL));
     char game = 'y', user_guess[max_lenght], indovina[max_lenght];
-    int score = 0;
+    int score, count;
+    long game_time;
 
     /** Game session */
      do {
-         long game_time = time(NULL);
+         score = 0, count = 0, game_time = time(NULL);
 
          while(1) {
-             long double x = rand(), y = rand(); //imposta il rand
+             long double x = rand(), y = rand(); //imposta il rand giusto
 
-             printf("\nInserisci la tua risposta (Africa, ...): ");
-             scanf("% s", &user_guess);
+             printf("\nCoordinate: %Lf, %Lf", x, y);
+             fflush(stdout);
+             sleep(4);
+             printf("\r\rInserisci la tua risposta (Africa, ...): ");
+             fflush(stdout);
+             scanf("%s", user_guess);
 
-             if(user_guess != guess(x, y)) {
-                 printf("Sbagliato! La risposta corretta era %s", guess(x, y));
+             for(int i = 0; i < strlen(user_guess); i++) { //input to lowercase
+                 user_guess[i] = tolower(user_guess[i]);
+             }
+
+             if(strcmp(user_guess, guess(x,y)) != 0) {
+                 printf("Sbagliato! La risposta corretta era '%s'", guess(x, y));
                  break;
-             } else {
+             }
+             else {
                 printf("Hai indovinato!");
                 score += xpDifficulty(x, y);
-                printf("\n*************************************************************************+");
+                score += xpTime(game_time);
+                printf("\n*************************************************************************\n");
+                 count++;
             }
-
          }
-         score += xpTime(game_time);
+         score += count * 10;
+
+         printf("\n\nUSER SCORE: %d", score);
+         printf("\n*************************************************************************");
 
          /** New Game **/
         printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
@@ -64,12 +81,11 @@ int main() {
 
     } while(game != 'N' && game != 'n');
 
-    printf("\n\nUSER SCORE: %d", score);
+    printf("\n\nTerminato con successo ...");
 
     printf("\n\n");
     return 0;
 }
-
 /** Restituisce i punti in base al tempo **/
 int xpTime(long start) {
     long finish = time(NULL);
@@ -80,21 +96,20 @@ int xpTime(long start) {
 /** Funzione per il calcolo della velocita di decadimento**/
 double velocita_Decadimento(double t) {
     const double tolerance = 100000000000.0; //valore di grandezza dei punti
-    double k = 0.1; //velocità decadimento
+    double k = 0.01; //velocità decadimento
     return tolerance / (1 + k * t);
 }
-
 /** Funzione per il calcolo dei punti in base alle coordinate **/
 int xpDifficulty(long double x, long double y) {
     const int incremento = 10;
     return (int) (incremento * sqrt(pow(x, 2) + pow(y, 2)));
 }
 /** Funzione per restituire il continente corrispondente **/
-char guess(long double x, long double y) {
+char* guess(long double x, long double y) {
     /**
      * todo
      * Restituisci una stringa in base al continente e suddividere i continenti + oceano in coordinate
      */
 
-    return 'oceano';
+    return "oceano"; //default
 }
