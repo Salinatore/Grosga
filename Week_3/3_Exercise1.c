@@ -17,27 +17,43 @@
  * N.B.: i margini che definiscono i confini dei vari continenti sono decisi da voi
  */
 #include <stdio.h>
-#include <stdbool.h>
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
 
+#define max_lenght 80
 
-bool guess(long double x, long double y);
+char guess(long double x, long double y);
 int xpTime(long start);
-int xp_Difficulty();
+int xpDifficulty(long double x, long double y);
 double velocita_Decadimento(double t);
-
 
 int main() {
     srand(time(NULL));
-    char game = 'y';
+    char game = 'y', user_guess[max_lenght], indovina[max_lenght];
     int score = 0;
 
     /** Game session */
      do {
          long game_time = time(NULL);
 
+         while(1) {
+             long double x = rand(), y = rand(); //imposta il rand
+
+             printf("\nInserisci la tua risposta (Africa, ...): ");
+             scanf("% s", &user_guess);
+
+             if(user_guess != guess(x, y)) {
+                 printf("Sbagliato! La risposta corretta era %s", guess(x, y));
+                 break;
+             } else {
+                printf("Hai indovinato!");
+                score += xpDifficulty(x, y);
+                printf("\n*************************************************************************+");
+            }
+
+         }
+         score += xpTime(game_time);
 
          /** New Game **/
         printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
@@ -48,7 +64,7 @@ int main() {
 
     } while(game != 'N' && game != 'n');
 
-    printf("\nTerminato con successo ...");
+    printf("\n\nUSER SCORE: %d", score);
 
     printf("\n\n");
     return 0;
@@ -61,20 +77,24 @@ int xpTime(long start) {
 
     return velocita_Decadimento(result);
 }
-/** Funzione per il calcolo dei punti **/
+/** Funzione per il calcolo della velocita di decadimento**/
 double velocita_Decadimento(double t) {
-    const double tolerance = 100000000000.0; // valore di grandezza dei punti
+    const double tolerance = 100000000000.0; //valore di grandezza dei punti
     double k = 0.1; //velocità decadimento
     return tolerance / (1 + k * t);
 }
 
-int xpDifficulty() {
-
-    return 0;
+/** Funzione per il calcolo dei punti in base alle coordinate **/
+int xpDifficulty(long double x, long double y) {
+    const int incremento = 10;
+    return (int) (incremento * sqrt(pow(x, 2) + pow(y, 2)));
 }
+/** Funzione per restituire il continente corrispondente **/
+char guess(long double x, long double y) {
+    /**
+     * todo
+     * Restituisci una stringa in base al continente e suddividere i continenti + oceano in coordinate
+     */
 
-bool guess(long double x, long double y) {
-
-
-    return true;
+    return 'oceano';
 }
