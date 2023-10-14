@@ -21,6 +21,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 
 int guess(int x, int y);
 int xpTime(long start);
@@ -50,6 +51,7 @@ int main() {
 
             printf("Coordinate: %d paralleli, %d meridiani", paralleli, meridiani);
             getchar();
+            sleep(4);
             printf("\033[H\033[J");  //clear terminal
 
             printf("Inserisci la tua risposta: \n [1] America \n [2] Asia \n [3] Europa \n [4] Africa \n [5] Oceania \n [6] Antartide \n [7] Oceano");
