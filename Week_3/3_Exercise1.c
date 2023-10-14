@@ -20,11 +20,7 @@
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 #include <ctype.h>
-
-#define max_lenght 80
 
 int guess(int x, int y);
 int xpTime(long start);
@@ -33,7 +29,7 @@ void clearInputBuffer();
 
 int main() {
     srand(time(NULL));
-    char game = 'y', indovina[max_lenght];
+    char game = 'y';
     int count, user_guess;
     long game_time;
     unsigned int score;
@@ -78,7 +74,7 @@ int main() {
                 printf("\n*************************************************************************\n");
             }
 
-            clearInputBuffer();
+            clearInputBuffer(); //clear the keyboard buffer for next iteration
         }
         score += count * 10; //incremento score per iterazioni vinte
 
