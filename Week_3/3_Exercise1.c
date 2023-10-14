@@ -26,9 +26,9 @@
 
 #define max_lenght 80
 
-char* guess(long double x, long double y);
+int guess(int x, int y);
 int xpTime(long start);
-int xpDifficulty(long double x, long double y);
+int xpDifficulty(int x, int y);
 double velocita_Decadimento(double t);
 
 int main() {
@@ -38,41 +38,51 @@ int main() {
     long game_time;
 
     /** Game session */
-     do {
-         score = 0, count = 0, game_time = time(NULL);
+    do {
+        score = 0, count = 0, game_time = time(NULL);
 
-         while(1) {
-             long double x = rand(), y = rand(); //imposta il rand giusto
+        while(1) {
+            /** Randomizzatore meridiani e paralleli e il loro segno */
+            int meridiani = rand() % 181, paralleli = rand() % 91;
+            if(rand() % 2 == 0)
+                meridiani *= -1;
+            if(rand() % 2 == 0)
+                paralleli *= -1;
 
-             printf("\nCoordinate: %Lf, %Lf", x, y);
-             fflush(stdout);
-             sleep(4);
-             printf("\r\rInserisci la tua risposta (Africa, ...): ");
-             fflush(stdout);
-             scanf("%s", user_guess);
+            printf("\033[H\033[J");
+            printf("Coordinate: %d paralleli, %d meridiani", paralleli, meridiani);
+            getchar();
+            printf("\033[H\033[J");  //Clear the screen
 
-             for(int i = 0; i < strlen(user_guess); i++) { //input to lowercase
-                 user_guess[i] = tolower(user_guess[i]);
-             }
+            printf("\n Inserisci la tua risposta: \n [1] America \n [2] Asia \n [3] Europa \n [4] Africa \n [5] Oceania \n [6] Antartide \n [7] Oceano");
+            printf("\n Risposta: ");
+            printf("%d", guess(paralleli, meridiani));
+            scanf("%d", &user_guess);
 
-             if(strcmp(user_guess, guess(x,y)) != 0) {
-                 printf("Sbagliato! La risposta corretta era '%s'", guess(x, y));
-                 break;
-             }
-             else {
+            if (user_guess < 1 || user_guess > 7){
+              printf("\n Risposta non valida");
+                break;
+            }
+
+            if(guess(paralleli, meridiani) != user_guess) {
+                printf("Sbagliato! La risposta corretta era '%d'", guess(paralleli, meridiani));
+                break;
+            }
+            else {
                 printf("Hai indovinato!");
-                score += xpDifficulty(x, y);
+                score += xpDifficulty(meridiani, paralleli);
                 score += xpTime(game_time);
                 printf("\n*************************************************************************\n");
-                 count++;
+                count++;
             }
-         }
-         score += count * 10;
+        }
+        score += count * 10; //incremento score per iterazioni vinte
 
-         printf("\n\nUSER SCORE: %d", score);
-         printf("\n*************************************************************************");
+        /** Stampa dei punti ottentuti */
+        printf("\nUSER SCORE: %d", score);
+        printf("\n*************************************************************************");
 
-         /** New Game **/
+        /** New Game **/
         printf("\n\nVuoi iniziare una nuova partita (Y/n)? ");
         scanf(" %c", &game);
 
@@ -86,6 +96,7 @@ int main() {
     printf("\n\n");
     return 0;
 }
+
 /** Restituisce i punti in base al tempo **/
 int xpTime(long start) {
     long finish = time(NULL);
@@ -93,23 +104,40 @@ int xpTime(long start) {
 
     return velocita_Decadimento(result);
 }
+
 /** Funzione per il calcolo della velocita di decadimento**/
 double velocita_Decadimento(double t) {
     const double tolerance = 100000000000.0; //valore di grandezza dei punti
     double k = 0.01; //velocità decadimento
     return tolerance / (1 + k * t);
 }
+
 /** Funzione per il calcolo dei punti in base alle coordinate **/
-int xpDifficulty(long double x, long double y) {
+int xpDifficulty(int x, int y) {
     const int incremento = 10;
     return (int) (incremento * sqrt(pow(x, 2) + pow(y, 2)));
 }
-/** Funzione per restituire il continente corrispondente **/
-char* guess(long double x, long double y) {
-    /**
-     * todo
-     * Restituisci una stringa in base al continente e suddividere i continenti + oceano in coordinate
-     */
 
-    return "oceano"; //default
+/** Funzione per restituire il continente corrispondente */
+int guess(int x, int y) {
+    if( x <= 70 && x >= -60 && y >= -180 && y <= -45){
+    return 1; //america
+    }
+    if( x <= 35 && x >= -35 && y >= -20 && y <= 45){
+    return 4; //africa
+    }
+    if( x <= 80 && x >= 5 && y >= 40 && y <= 180){
+    return 2; //asia
+    }
+    if( x <= 75 && x >= 35 && y >= -10 && y <= 40){
+    return 3; //europa
+    }
+    if( x <= 5 && x >= -45 && y >= 90 && y <= 180){
+    return 5; //oceania
+    }
+    if( x <= -60 && x >= -80 && y >= -180 && y <= 180){
+    return 6; //antartide
+    }
+
+    return 7; //default
 }

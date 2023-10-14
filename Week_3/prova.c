@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-#include <math.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 #include <ctype.h>
 
 int main(){
