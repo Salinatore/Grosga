@@ -33,9 +33,12 @@ void clearInputBuffer();
 
 int main() {
     srand(time(NULL));
-    char game = 'y', user_guess[max_lenght], indovina[max_lenght];
-    int score, count;
+    char game = 'y', indovina[max_lenght];
+    int count, user_guess;
     long game_time;
+    unsigned int score;
+
+    printf("\033[H\033[J"); //clear terminal before game
 
     /** Game session */
     do {
@@ -80,7 +83,8 @@ int main() {
         score += count * 10; //incremento score per iterazioni vinte
 
         /** Stampa dei punti ottentuti */
-        printf("\nUSER SCORE: %d", score);
+        printf("\n\nUSER SCORE: %u", score);
+        if(score > 1000) printf("   Sei stato molto bravo!!");
         printf("\n*************************************************************************");
 
         /** New Game **/
