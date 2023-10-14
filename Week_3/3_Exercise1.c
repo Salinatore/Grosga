@@ -29,7 +29,7 @@
 int guess(int x, int y);
 int xpTime(long start);
 int xpDifficulty(int x, int y);
-double velocita_Decadimento(double t);
+void clearInputBuffer();
 
 int main() {
     srand(time(NULL));
@@ -49,12 +49,11 @@ int main() {
             if(rand() % 2 == 0)
                 paralleli *= -1;
 
-            printf("\033[H\033[J");
             printf("Coordinate: %d paralleli, %d meridiani", paralleli, meridiani);
             getchar();
-            printf("\033[H\033[J");  //Clear the screen
+            printf("\033[H\033[J");  //clear terminal
 
-            printf("\n Inserisci la tua risposta: \n [1] America \n [2] Asia \n [3] Europa \n [4] Africa \n [5] Oceania \n [6] Antartide \n [7] Oceano");
+            printf("Inserisci la tua risposta: \n [1] America \n [2] Asia \n [3] Europa \n [4] Africa \n [5] Oceania \n [6] Antartide \n [7] Oceano");
             printf("\n Risposta: ");
             printf("%d", guess(paralleli, meridiani));
             scanf("%d", &user_guess);
@@ -69,12 +68,14 @@ int main() {
                 break;
             }
             else {
-                printf("Hai indovinato!");
+                count++;
+                printf("Hai indovinato %d coordinate!!", count);
                 score += xpDifficulty(meridiani, paralleli);
                 score += xpTime(game_time);
                 printf("\n*************************************************************************\n");
-                count++;
             }
+
+            clearInputBuffer();
         }
         score += count * 10; //incremento score per iterazioni vinte
 
@@ -102,20 +103,12 @@ int xpTime(long start) {
     long finish = time(NULL);
     double result = (double)finish - (double)start; //delta tempo
 
-    return velocita_Decadimento(result);
-}
-
-/** Funzione per il calcolo della velocita di decadimento**/
-double velocita_Decadimento(double t) {
-    const double tolerance = 100000000000.0; //valore di grandezza dei punti
-    double k = 0.01; //velocità decadimento
-    return tolerance / (1 + k * t);
+    return (int) -result*10;
 }
 
 /** Funzione per il calcolo dei punti in base alle coordinate **/
 int xpDifficulty(int x, int y) {
-    const int incremento = 10;
-    return (int) (incremento * sqrt(pow(x, 2) + pow(y, 2)));
+    return (int) (10 * sqrt(pow(x, 2) + pow(y, 2)));
 }
 
 /** Funzione per restituire il continente corrispondente */
@@ -140,4 +133,9 @@ int guess(int x, int y) {
     }
 
     return 7; //default
+}
+
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
