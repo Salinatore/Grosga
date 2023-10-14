@@ -50,13 +50,13 @@ int main() {
                 paralleli *= -1;
 
             printf("Coordinate: %d paralleli, %d meridiani", paralleli, meridiani);
-            getchar();
-            sleep(4);
+            printf("\nHai 10 secondi per memorizzare le coordinate!!");
+            fflush(stdout); //force to clear buffer
+            sleep(10);
             printf("\033[H\033[J");  //clear terminal
 
             printf("Inserisci la tua risposta: \n [1] America \n [2] Asia \n [3] Europa \n [4] Africa \n [5] Oceania \n [6] Antartide \n [7] Oceano");
             printf("\n Risposta: ");
-            printf("%d", guess(paralleli, meridiani));
             scanf("%d", &user_guess);
 
             if (user_guess < 1 || user_guess > 7){
@@ -70,7 +70,7 @@ int main() {
             }
             else {
                 count++;
-                printf("Hai indovinato %d coordinate!!", count);
+                printf("Hai indovinato %d posizione/i!!", count);
                 score += xpDifficulty(meridiani, paralleli);
                 score += xpTime(game_time);
                 printf("\n*************************************************************************\n");
