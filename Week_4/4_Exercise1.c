@@ -17,10 +17,53 @@
  */
 
 #include <stdio.h>
+#include <time.h>
+#include <math.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <unistd.h>
 
 int main() {
-    // Your code here
+    srand((unsigned int) time(NULL)); //initializing rand
+
+    int user_array_width = -1, pc_array_width = -1;
+
+    printf("Inserisci la grandezza del tuo array: ");
+    scanf("%d", &user_array_width); //initializing width of user_array
+
+    pc_array_width = (rand() % user_array_width) + 1; //using the width of the user array to limit the pc array + 1
+
+    int user[user_array_width], pc[pc_array_width];
+
+    /** initializing user and pc*/
+    printf("\nInserisci i valori del tuo vettore-->\n");
+    for(int i = 0; i < user_array_width; i++){
+        printf("\t%d°: ", i);
+        scanf("%d", &user[i]);
+    }
+
+    for(int i = 0; i < pc_array_width; i++){
+        pc[i] = rand() % 100; //values inside pc are limited form 0 to 99
+    }
+
+    /** initializing intersection array */
+    int max_width = -1;
+
+    if(user_array_width > pc_array_width){
+        max_width = user_array_width;
+
+    }
+    else{
+        max_width = pc_array_width;
+    }
+
+
+    if()
+
+    /** initializing sum array*/
 
     printf("\n\n");
     return 0;
 }
+
+int
