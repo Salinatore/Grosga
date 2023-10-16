@@ -39,7 +39,7 @@ int main() {
     lettere ++;
     do{
         d = rand() % 4;
-        if( d == 0 && x+1 <= 10 && array[x+1][y] == '.'){
+        if( d == 0 && x+1 < 10 && array[x+1][y] == '.'){
             x++;
             array[x][y] = lettere;
             lettere++;
@@ -57,16 +57,16 @@ int main() {
             lettere++;
 
         }
-        if( d == 3 && y+1 <= 10 && array[x][y+1] == '.'){
+        if( d == 3 && y+1 < 10 && array[x][y+1] == '.'){
             y++;
             array[x][y] = lettere;
             lettere++;
 
         }
         if(lettere == 'Z') lettere = 'A';
-        if(array[x+1][y] != '.' || x+1 > 10){
+        if(array[x+1][y] != '.' || x+1 >= 10){
             if(array[x-1][y] != '.' || x-1 < 0){
-               if(array[x][y+1] != '.' || y+1 > 10){
+               if(array[x][y+1] != '.' || y+1 >= 10){
                    if(array[x][y-1] != '.' || y-1 < 0){
                        break;
                    }
