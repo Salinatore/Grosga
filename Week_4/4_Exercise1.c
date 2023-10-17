@@ -49,12 +49,12 @@ int main(){
     }
 
     //printing pc and user array
-    printf("\nPC vector--> ");
+    printf("\nPC array--> ");
     for(int i = 0; i < pc_array_width; i++){
         printf("%d ", pc[i]);
     }
 
-    printf("\nUser vector--> ");
+    printf("\nUser array--> ");
     for(int i = 0; i < user_array_width; i++){
         printf("%d ", user[i]);
     }
@@ -83,7 +83,7 @@ int main(){
         }
     }
 
-    printf("\nIntersection vector without repetition--> ");
+    printf("\nIntersection array without repetition--> ");
     if(pos != 0){
         for(int i = 0; i < pos; i++)
             printf("%d ", inter_array[i]);
@@ -109,7 +109,7 @@ int main(){
         }
     }
 
-    printf("\nIntersection vector with repetition--> ");
+    printf("\nIntersection array with repetition--> ");
     if(rep != 0){
         for(int i = 0; i < rep; i++)
             printf("%d ", inter_array_rep[i]);
@@ -120,40 +120,66 @@ int main(){
 
     /** initializing union array (without repetition)*/
     int union_array[user_array_width + pc_array_width];
-    pos = 0; //reinitializing pos for union_array
+    int uni_pos = 0; //reinitializing pos for union_array
     bool already_in = false;
 
     for(int i = 0; i < user_array_width; i++){ //add user to union
-        for(int k = 0; k <= pos; k++){
+        for(int k = 0; k <= uni_pos; k++){
             if(user[i] == union_array[k]){
                 already_in = true;
                 break;
             }
         }
         if(already_in == false){
-            union_array[pos] = user[i];
-            pos++;
+            union_array[uni_pos] = user[i];
+            uni_pos++;
         }
         already_in = false;
     }
 
     for(int i = 0; i < pc_array_width; i++){ //add pc to union
-        for(int k = 0; k <= pos; k++){ //control for repetition
+        for(int k = 0; k <= uni_pos; k++){ //control for repetition
             if(pc[i] == union_array[k]){
                 already_in = true;
                 break;
             }
         }
         if(already_in == false){
-            union_array[pos] = pc[i];
-            pos++;
+            union_array[uni_pos] = pc[i];
+            uni_pos++;
         }
         already_in = false;
     }
 
-    printf("\nUnion vector without repetition--> ");
-    for(int i = 0; i < pos; i++)
+    printf("\nUnion array without repetition--> ");
+    for(int i = 0; i < uni_pos; i++)
         printf("%d ", union_array[i]);
+
+    /** */
+    printf("\n\nInirizzi di user--> ");
+    for(int i = 0; i < user_array_width; i++){
+        printf("%p ", user+i);
+    }
+
+    printf("\nInirizzi di pc--> ");
+    for(int i = 0; i < pc_array_width; i++){
+        printf("%p ", pc+i);
+    }
+
+    printf("\nInirizzi di intersezione senza repetizioni--> ");
+    for(int i = 0; i < pos; i++){
+        printf("%p ", inter_array+i);
+    }
+
+    printf("\nInirizzi di intersezione con ripetizioni--> ");
+    for(int i = 0; i < rep; i++){
+        printf("%p ", inter_array_rep+i);
+    }
+
+    printf("\nInirizzi dell'unione--> ");
+    for(int i = 0; i < uni_pos; i++){
+        printf("%p ", union_array+i);
+    }
 
     printf("\n\n");
     return 0;
