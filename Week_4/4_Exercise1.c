@@ -27,17 +27,17 @@
 int main(){
     srand((unsigned int) time(NULL)); //initializing rand
 
+    /** initializing user and pc and print them*/
     int user_array_width = -1, pc_array_width = -1;
 
     printf("Inserisci la grandezza del tuo array: ");
     scanf("%d", &user_array_width); //initializing width of user_array
 
-    pc_array_width = rand() % 10 + 1; //using the width of the user array to limit the pc array + 1
-    printf("%d", pc_array_width); //*
+    pc_array_width = rand() % 100 + 1; //array limited form 1 to 50
+    printf("Grandezza array pc: %d  (valori all'interno saranno tra 0 e 49)\n", pc_array_width); //*
 
     int user[user_array_width], pc[pc_array_width];
 
-    /** initializing user and pc*/
     printf("\nInserisci i valori del tuo vettore-->\n");
     for(int i = 0; i < user_array_width; i++){
         printf("\t%d°: ", i);
@@ -45,12 +45,10 @@ int main(){
     }
 
     for(int i = 0; i < pc_array_width; i++){
-        pc[i] = rand() % 100; //values inside pc are limited form 0 to 99
+        pc[i] = rand() % 50; //values inside pc are limited form 0 to 49
     }
 
-    //printing each array
-    pc[1] = 1, pc[2] = 2, pc[3] = 1;  //  ********
-
+    //printing pc and user array
     printf("\nPC vector--> ");
     for(int i = 0; i < pc_array_width; i++){
         printf("%d ", pc[i]);
@@ -86,62 +84,76 @@ int main(){
     }
 
     printf("\nIntersection vector without repetition--> ");
-    for(int i = 0; i < pos; i++){
-        printf("%d ", inter_array[i]);
+    if(pos != 0){
+        for(int i = 0; i < pos; i++)
+            printf("%d ", inter_array[i]);
     }
+    else
+        printf("NULL");
 
     /** initializing intersection array (with repetition)*/
-    //will be using the same array
-    pos = 0; //reinitializing pos for intersection array with repetition
-    bool first_time = true;
+    int inter_array_rep[user_array_width + pc_array_width], rep = 0;
 
-    for(int i = 0; i < user_array_width; i++){
-        if(user[i] == )
+    for(int i = 0; i < pos; i++){
+        for(int u = 0; u < user_array_width; u++){
+            if(user[u] == inter_array[i]){
+                inter_array_rep[rep] = user[u];
+                rep++;
+            }
+        }
+        for(int p = 0; p < pc_array_width; p++){
+            if(pc[p] == inter_array[i]) {
+                inter_array_rep[rep] = pc[p];
+                rep++;
+            }
+        }
     }
 
     printf("\nIntersection vector with repetition--> ");
-    for(int i = 0; i < pos; i++){
-        printf("%d ", inter_array[i]);
+    if(rep != 0){
+        for(int i = 0; i < rep; i++)
+            printf("%d ", inter_array_rep[i]);
     }
+    else
+        printf("NULL");
+
 
     /** initializing union array (without repetition)*/
     int union_array[user_array_width + pc_array_width];
     pos = 0; //reinitializing pos for union_array
+    bool already_in = false;
 
-    for(int i = 0; i < user_array_width; i++){
-        for(int j = 0; j < pos; j++){ //control if value already exist in the intersection array
-            if(user[i] == union_array[j]){
-                inside = true;
+    for(int i = 0; i < user_array_width; i++){ //add user to union
+        for(int k = 0; k <= pos; k++){
+            if(user[i] == union_array[k]){
+                already_in = true;
                 break;
             }
-            else continue; //continue cycle if value hasn't been found
         }
-        if(inside == false){ //if the value wasn't already in the inter_array
-            union_array[pos] = user[i]; //inserting new value in the inter_array
+        if(already_in == false){
+            union_array[pos] = user[i];
             pos++;
         }
-        inside = false;
+        already_in = false;
     }
 
-    for(int i = 0; i < pc_array_width; i++){
-        for(int j = 0; j < pos; j++){ //control if value already exist in the intersection array
-            if(pc[i] == union_array[j]){
-                inside = true;
+    for(int i = 0; i < pc_array_width; i++){ //add pc to union
+        for(int k = 0; k <= pos; k++){ //control for repetition
+            if(pc[i] == union_array[k]){
+                already_in = true;
                 break;
             }
-            else continue; //continue cycle if value hasn't been found
         }
-        if(inside == false){ //if the value wasn't already in the inter_array
-            union_array[pos] = pc[i]; //inserting new value in the inter_array
+        if(already_in == false){
+            union_array[pos] = pc[i];
             pos++;
         }
-        inside = false;
+        already_in = false;
     }
 
     printf("\nUnion vector without repetition--> ");
-    for(int i = 0; i < pos; i++){
-        printf("%d ", inter_array[i]);
-    }
+    for(int i = 0; i < pos; i++)
+        printf("%d ", union_array[i]);
 
     printf("\n\n");
     return 0;
