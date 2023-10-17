@@ -155,7 +155,7 @@ int main(){
     for(int i = 0; i < uni_pos; i++)
         printf("%d ", union_array[i]);
 
-    /** */
+    /** printing of address of all arrays*/
     printf("\n\nInirizzi di user--> ");
     for(int i = 0; i < user_array_width; i++){
         printf("%p ", user+i);
