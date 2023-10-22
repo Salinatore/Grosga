@@ -31,7 +31,7 @@ int main(){
     printf("Inserisci la grandezza del tuo array: ");
     scanf("%d", &user_array_width); //initializing width of user_array
 
-    pc_array_width = rand() % 100 + 1; //array limited form 1 to 50
+    pc_array_width = rand() % 100 + 1; //array limited form 1 to 100
     printf("Grandezza array pc: %d  (valori all'interno saranno tra 0 e 49)\n", pc_array_width); //*
 
     int user[user_array_width], pc[pc_array_width];
