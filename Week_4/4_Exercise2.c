@@ -28,12 +28,7 @@ int main() {
             array[i][u] = '.';
         }
     }
-    for (int i = 0; i < 10; i++){
-        for(int u = 0; u < 10; u++){
-           printf(" %c", array[i][u]);
-        }
-        printf("\n");
-    }
+
     printf("\n");
     array[0][0] = lettere;
     lettere ++;
@@ -81,7 +76,6 @@ int main() {
         }
         printf("\n");
     }
-    // Your code here
 
     printf("\n\n");
     return 0;
