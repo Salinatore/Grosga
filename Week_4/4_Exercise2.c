@@ -58,7 +58,7 @@ int main() {
             lettere++;
 
         }
-        if(lettere > 'Z') lettere = 'A';
+        if(lettere > 'Z') break;
         if(array[x+1][y] != '.' || x+1 >= 10){
             if(array[x-1][y] != '.' || x-1 < 0){
                if(array[x][y+1] != '.' || y+1 >= 10){
