@@ -27,9 +27,9 @@ int main(){
     /** Getting string form stdin*/
     printf("You can enter the string here--> ");
     bool string_has_began = false;
-    int i;
+    int i = 0;
 
-    for(i = 0; ; ){
+    do{
         buffer = getchar();
 
         if(buffer == ' ' && string_has_began == false)
@@ -49,12 +49,13 @@ int main(){
             i = 9999;
             break;
         }
-    }
-    decrypted[i] = '\0';
+    }while(1);
+    decrypted[i] = '\0'; //adding terminator
 
     /** Creating Crypted String*/
     unsigned int string_width = strlen(decrypted);
     char encrypted[string_width+1];
+    fflush(stdin);
 
     for(i = 0; i < string_width; i++){
         if(decrypted[i] != ' ')
@@ -96,5 +97,5 @@ int main(){
 char random_char(){
     char string[] = {"qwé*é*é()ty()uiopasdfghjklzxcvbnm"};
 
-    return string[rand()%26];
+    return string[rand()%33];
 }
