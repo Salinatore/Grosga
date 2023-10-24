@@ -2,7 +2,7 @@
  * @file 5_Exercise2.c
  * @author Alessandro Gardini n. matricola: 0001114867, Filippo Greppi n. matricola: 0001114837, Lorenzo Rossi n. matricola: 0001114876
  * @version 0.1 - no string.h
- * @date 16/10/23
+ * @date 23/10/23
 */
 
 #include <stdio.h>
