@@ -6,7 +6,7 @@
 */
 
 #include <stdio.h>
-#include "stdbool.h"
+#include <stdbool.h>
 
 #define MAX 30
 
