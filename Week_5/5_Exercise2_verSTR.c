@@ -10,34 +10,33 @@
 #include <string.h>
 
 int main() {
-    char p1[30], p2[30], t;
-    int l1, l2, c;
+    char p1[31], p2[31], t;
+    int l1, l2, c = 0, y;
     printf("inserire parola 1: \n ");
-    scanf("%s", p1);
+    scanf("%30s", p1);
     printf("inserire parola 2: \n ");
-    scanf("%s", p2);
+    scanf("%30s", p2);
     l1 = strlen (p1);
     l2 = strlen (p2);
-    for(int i = 0; i < l1 - l2; i++){
-        c = 0;
-        for(int j = 0; j < l2; j++){
-            if(p1[i+j] == p2[j]) c++;
+    for(int i = 0; i <= l1 - l2; i++) {
+            if (strncmp(p1 + i, p2, l2) == 0){
+                p1[i] = '*';
+                for(int j = 1; j < l2; j++){
+                    p1[i+j] = ' ';
+                }
         }
-        if(c == l2 ){
-            p1[i] = '*';
-            for(int k = 1; k < l2; k++) {
-                p1[k + i] = ' ';
-            }
-        }
+
     }
-    for(int i = 1; i < l1; i++){
-        if(p1[i - 1] == ' '){
-            p1[i - 1] = p1[i];
-            p1[i] = ' ';
-            i =
-        }
-    }
-    for(int i = 0; i < l1; i++){
+
+ for(int i = 0; i < l1; i++){
+     if(p1[i] != ' '){
+         p1[c] = p1[i];
+         c++;
+     }
+ }
+ p1[c] = '\0';
+
+        for(int i = 0; i < l1; i++){
         printf("%c", p1[i]);
     }
 }
