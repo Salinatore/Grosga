@@ -13,7 +13,6 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#define DELAY 9000
 #define BLUE "\e[1;94m"
 #define DEFAULT "\e[0;32m"
 
@@ -24,9 +23,9 @@ int main(){
 
     char decrypted[10000], buffer;
 
-    printf("\033[H\033[J\n");  //clear terminal
+    printf("\033[H\033[J\n");  //to clear terminal
 
-    /** Getting string form stdin*/
+    /** String form stdin with initial spaces*/
     printf("You can enter the string here--> ");
     bool string_has_began = false;
     int i = 0;
@@ -52,11 +51,12 @@ int main(){
             break;
         }
     }while(1);
-    decrypted[i] = '\0'; //adding terminator
+    decrypted[i] = '\0'; //terminator add
 
-    /** Creating Crypted String*/
+    /** Crypted String Creation maintaing spaces */
     unsigned int string_width = strlen(decrypted);
     char encrypted[string_width+1];
+    bool already_decrypted[string_width];
     fflush(stdin);
 
     for(i = 0; i < string_width; i++){
@@ -64,6 +64,8 @@ int main(){
             encrypted[i] = random_char();
         else
             encrypted[i] = ' ';
+
+        already_decrypted[i] = false; //used later for randomising decryption
     }
     encrypted[string_width] = '\0';
 
@@ -71,34 +73,35 @@ int main(){
     printf("\nDecrypting your string--> " DEFAULT "%s", encrypted);
     fflush(stdout);
     sleep(1);
+    int can_exit = 0;
 
-    for(int count = (int)string_width; count > 0; count--){
-        for(int k = 0; k < count; k++){ //cleaning the output
+    do{
+        for(int k = 0; k < string_width; k++){ //reset the output
             printf("\b");
-
-            fflush(stdout);
-            usleep(DELAY);
         }
 
-        for(int k = string_width-count; k < string_width; k++){ //print
-            if(k <= (string_width - count)){
-                printf(BLUE "%c" DEFAULT, decrypted[k]);
-            }
-            else{
-                printf(DEFAULT "%c", encrypted[k]);
+        for(int k = 0; k < string_width; k++){
+            if(already_decrypted[k] == false && rand()%2 == 0){ //random chance of being decrypted
+                can_exit++;
+                already_decrypted[k] = true;
             }
 
-            fflush(stdout);
-            usleep(DELAY);
+            if(already_decrypted[k] == true) //print
+                printf(BLUE"%c", decrypted[k]);
+            else
+                printf(DEFAULT"%c", encrypted[k]);
         }
-    }
+
+        fflush(stdout);
+        usleep(900000);
+    }while(can_exit < string_width);
 
     printf("\n\n");
     return 0;
 }
 
 char random_char(){
-    char string[] = {"qwé*é*é()ty()uiopasdfghjklzxcvbnm"};
+    char string[] = {"qwé*é*é()ty()uiopò°##ghjklz§cvbnm"};
 
     return string[rand()%33];
 }
