@@ -68,7 +68,7 @@ int main(){
     encrypted[string_width] = '\0';
 
     /** Visual */
-    printf("\nDecrypting your string-->\n" DEFAULT "%s", encrypted);
+    printf("\nDecrypting your string--> " DEFAULT "%s", encrypted);
     fflush(stdout);
     sleep(1);
 
