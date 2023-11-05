@@ -7,38 +7,44 @@
 
 #include <stdio.h>
 
-int main(){
+int main() {
     int n, *pn = &n;
     float f, *pf = &f;
     double d, *pd = &d;
     char c, *pc = &c;
-    int array[5] = {10,20,30,40,50};
+    int array[5] = {10, 20, 30, 40, 50};
 
-    /** initialing*/
-    printf("Int-->");
-    scanf("%d", pn);
-    printf("Float-->");
-    scanf("%f", pf);
-    printf("Duble-->");
-    scanf("%lf", pd);
-    printf("Char-->");
-    fflush(stdin);
-    scanf("%c", pc);
+    for(int i = 1; i <= 2; i++){
+        /** initialing with scanf*/
+        printf("Insert Values for the %d° time:\n", i);
+        printf("Int-->");
+        scanf("%d", pn);
+        printf("Float-->");
+        scanf("%f", pf);
+        printf("Duble-->");
+        scanf("%lf", pd);
+        printf("Char-->");
+        fflush(stdin);
+        scanf("%c", pc);
 
-    /** printing value*/
-    printf("\nValue-->\n");
-    printf("%d - %d\n", n, *pn);
-    printf("%.3f - %.3f\n", f, *pf);
-    printf("%.3lf - %.3lf\n", d, *pd);
-    printf("%c - %c\n", c, *pc);
+        /** printing value*/
+        printf("\nValue (directly - indirect)-->\n");
+        printf("%d - %d\n", n, *pn);
+        printf("%.3f - %.3f\n", f, *pf);
+        printf("%.3lf - %.3lf\n", d, *pd);
+        printf("%c - %c\n", c, *pc);
 
-    /** printing memory addres*/
-    printf("\nAddres-->\n");
-    printf("Int--> %p - %p\n", &n, pn);
-    printf("Float--> %p - %p\n", &f, pf);
-    printf("Double--> %p - %p\n", &d, pd);
-    printf("Char--> %p - %p\n", &c, pc);
+        /** printing memory addres*/
+        printf("\nAddres (& - using pointer)-->\n");
+        printf("Int--> %p - %p\n", &n, pn);
+        printf("Float--> %p - %p\n", &f, pf);
+        printf("Double--> %p - %p\n", &d, pd);
+        printf("Char--> %p - %p\n", &c, pc);
 
-
-
+        printf("\nAddres of pointers-->\n");
+        printf("Int--> %p \n", &pn);
+        printf("Float--> %p \n", &pf);
+        printf("Double--> %p \n", &pd);
+        printf("Char--> %p \n\n", &pc);
+    }
 }
