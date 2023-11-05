@@ -11,7 +11,7 @@
 
 /** Table **/
 #define NA 4 //Actions number
-#define NR 5 //Rows number
+#define NR 5 //Rows numberzz
 #define NC 6 //Cols number
 #define Q_LENGTH (NC * NR)  // Q-table's length
 
