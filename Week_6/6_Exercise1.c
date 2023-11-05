@@ -32,7 +32,6 @@ void printTable(float q_table[Q_LENGTH][NA]);
 
 int main() {
     srand(time(NULL));
-
     int map[NR][NC] = {
             {VOID,  VOID,   POWER,  VOID,   VOID,   VOID},
             {VOID,  MINE,   VOID,   VOID,   MINE,   VOID},
