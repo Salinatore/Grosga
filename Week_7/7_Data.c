@@ -1,5 +1,5 @@
 /**
- * @file 7_Exercise1.c
+ * @file 7_Exercise.c
  * @author Alessandro Gardini n. matricola: 0001114867, Filippo Greppi n. matricola: 0001114837, Lorenzo Rossi n. matricola: 0001114876
  * @version 0.1 
  * @date 06/11/23

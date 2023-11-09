@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "7_Exercise1.c"
+#include "7_Data.c"
 
 int main() {
     FILE *database = fopen("Week_7/database.txt", "a+"); //a+ = open or create
