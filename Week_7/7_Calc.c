@@ -9,11 +9,15 @@
 #include <stdlib.h>
 #include "7_Data.c"
 
+double distance(struct prestito a, struct prestito b);
+
 int main() {
-    FILE *database = fopen("Week_7/database.txt", "a+"); //a+ = open or create
+    main();
 
-
-    fclose(database);
     printf("\n\n");
     return EXIT_SUCCESS;
+}
+
+double distance(struct prestito a, struct prestito b) {
+    // return sqrt(pow(a., 2) + pow(b, 2));
 }
