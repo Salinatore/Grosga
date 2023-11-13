@@ -9,17 +9,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-#include "string.h"
+#include <string.h>
 
-#define K 11 //meglio dispari, numero di vicini più vicini
+#define K 5 //meglio dispari, numero di vicini più vicini
 #define LINES (int) 10000
+#define ID_LENGTH 36
 #define MAX 256
 #define NA false //not-available
 
 /* Store csv data */
 struct credit {
-    char loanID[MAX];
-    char customerID[MAX];
+    char loanID[ID_LENGTH];
+    char customerID[ID_LENGTH];
     char loanStatus[MAX];
     int currentLoanAmount;
     char term[MAX];
@@ -47,7 +48,7 @@ struct prestito {
     float dti; //Il rapporto debito/reddito del mutuatario (importo del debito diviso per il reddito annuale)
     unsigned int fico; //Il punteggio di credito FICO del mutuatario.
     unsigned int days_with_cr_line; //Il numero di giorni in cui il debitore ha avuto una linea di credito
-    unsigned int revol_bal; //Il saldo revolving del debitore (importo non pagato alla fine del ciclo di fatturazione della carta di credito)
+    float revol_bal; //Il saldo revolving del debitore (importo non pagato alla fine del ciclo di fatturazione della carta di credito)
     unsigned int revol_util; //Il tasso di utilizzo della linea revolving del debitore (l'importo della linea di credito utilizzata rispetto al credito totale disponibile)
     unsigned int inq_last_6mths; //Il numero di richieste di informazioni da parte dei creditori negli ultimi 6 mesi
     unsigned int delinq_2yrs; //Il numero di volte in cui il debitore è stato in ritardo di oltre 30 giorni con i pagamenti negli ultimi 2 anni.
@@ -60,7 +61,7 @@ void fillData(FILE *myfile, struct credit ar[], int ar_length);
 void printDataset(struct credit ar[], int ar_length);
 void findValues(struct credit *credito, struct prestito *prestito);
 
-int main() { //TODO: da controllare
+int try() { //TODO: da controllare
     FILE *fp = fopen("credit.csv", "r"); //TODO da cambiare quando si consengna
 
     if(fp == NULL) {
@@ -118,6 +119,16 @@ void printDataset(struct credit ar[], int ar_length) {
     }
 }
 
+/**
+ * Algoritmo:
+ * 1.Scegliere il valore di K, cioè il numero di vicini più prossimi che verrà utilizzato per fare la previsione ✅
+ * 2.Calcolare la distanza tra quel punto e tutti i punti dell'insieme di training
+ * 3.Selezionare i K vicini più prossimi in base alle distanze calcolate
+ * 4.Assegnare l'etichetta della classe maggioritaria al nuovo punto
+ * 5.Ripetere i passaggi da 2 a 4 per tutti i punti dati dell'insieme di test
+ * 6.Valutare l'accuratezza dell'algoritmo (usando il 25% dei dati del dataset dato).
+ **/
+
 /*
  * double euclide(struct prestito a, struct prestito b) {
  * return sqrt(pow(a.credit_policy, 2) + pow(a.));
@@ -126,16 +137,35 @@ void printDataset(struct credit ar[], int ar_length) {
  */
 
 //TODO update file via ex 2
-//
 
 void findValues(struct credit *credito, struct prestito *prestito) {
-    if()
+    if(strcmp(credito->loanStatus, "Fully Paid") == 0)
         prestito->credit_policy = true;
-    else if()
+    else if(strcmp(credito->loanStatus, "Charged Off") == 0)
         prestito->credit_policy = false;
 
-    strcpy(credito->purpose, prestito->purpose);
+    strcpy(credito->purpose, prestito->purpose); //check it
+    prestito->int_rate = 0.05 * (credito->annualIncome) / (1 + 0.1 * credito->creditScore);
 
+    if(prestito->credit_policy == true) {
+        double monthlyInterestRate = (prestito->int_rate / 100.0) / 12.0;
+        prestito->installment = ceil(log(1 - (credito->currentLoanAmount * monthlyInterestRate) / credito->monthlyDebt) / log(1 + monthlyInterestRate));
+    } else
+        prestito->installment = 0;
 
+    prestito->log_annual_inc = log(credito->annualIncome);
+    prestito->dti = credito->debtAmount / credito->annualIncome;
+    prestito->fico = credito->creditScore;
 
+    prestito->days_with_cr_line;
+    prestito->revol_bal;
+    prestito->revol_util; //Il tasso di utilizzo della linea revolving del debitore (l'importo della linea di credito utilizzata rispetto al credito totale disponibile)
+    prestito->inq_last_6mths; //Il numero di richieste di informazioni da parte dei creditori negli ultimi 6 mesi
+
+    int monthsInTwoYears = (int)(credito->yearsOfCreditHistory * 12);
+    prestito->delinq_2yrs = (credito->monthsSinceLastDelinquent > 30) ? (monthsInTwoYears / 30) : 0; //Il numero di volte in cui il debitore è stato in ritardo di oltre 30 giorni con i pagamenti negli ultimi 2 anni.
+
+    prestito->pub_rec = credito->bankruptcies;
+    prestito->not_fully_paid = (credito->currentLoanAmount != 0);
 }
+
