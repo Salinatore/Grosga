@@ -12,7 +12,7 @@
 double distance(struct prestito a, struct prestito b);
 
 int main() {
-    try();
+    main();
 
     printf("\n\n");
     return EXIT_SUCCESS;

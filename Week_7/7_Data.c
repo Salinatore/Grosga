@@ -61,19 +61,19 @@ void fillData(FILE *myfile, struct credit ar[], int ar_length);
 void printDataset(struct credit ar[], int ar_length);
 void findValues(struct credit *credito, struct prestito *prestito);
 
-int try() { //TODO: da controllare
-    FILE *fp = fopen("credit.csv", "r"); //TODO da cambiare quando si consengna
+int main() { //TODO: da controllare
+    FILE *fp = fopen("Week_7/credit.csv", "r"); //TODO da cambiare quando si consengna
 
     if(fp == NULL) {
         printf("\nErrore nell'apertura del file");
-        exit(1);
+        exit(EXIT_FAILURE);
     } else {
         int n_row = linesofFile(fp);
         struct credit data[n_row];
         struct credit new_loan;
         struct prestito database[LINES];
 
-        fillData(fp,data, n_row); //write into the array all the data
+        fillData(fp,data, LINES); //write into the array all the data
         printDataset(data, n_row);
 
         for(int i = 0; i < LINES; i++) {
@@ -81,11 +81,9 @@ int try() { //TODO: da controllare
         }
 
 
-
-
         /** Add new loan */
         printf("\nInserisci il codice del prestito: ");
-        scanf("%s", new_loan.loanID);
+        scanf("%35s", new_loan.loanID);
 
 
         fclose(fp);
@@ -103,19 +101,32 @@ int linesofFile(FILE *myfile) {
     return n;
 }
 
-void fillData(FILE *myfile, struct credit ar[], int ar_length) {//TODO: skip first line of csv file
-    for(int i = 0; i < ar_length; i++) {
-        //TODO: fill structure with data (virtuale for info)
+void fillData(FILE *myfile, struct credit ar[], int ar_length) {
+    char header[256];
+    fgets(header, sizeof(header), myfile);  // Ignora l'intestazione
+
+    for (int i = 0; i < ar_length; i++) {
+        int result = fscanf(myfile, "%49[^,],%49[^,],%49[^,],%d,%49[^,],%d,%d,%49[^,],%49[^,],%49[^,],%f,%f,%f,%d,%d,%d,%d,%d,%d ",
+                            ar[i].loanID, ar[i].customerID, ar[i].loanStatus, &ar[i].currentLoanAmount, ar[i].term, &ar[i].creditScore, &ar[i].annualIncome,
+                            ar[i].yearJob, ar[i].homeOwnership, ar[i].purpose, &ar[i].monthlyDebt, &ar[i].yearsOfCreditHistory, &ar[i].monthsSinceLastDelinquent,
+                            &ar[i].numberOfOpenAccounts, &ar[i].numberOfCreditProblems, &ar[i].currentCreditBalance, &ar[i].maximumOpenCredit, &ar[i].bankruptcies,
+                            &ar[i].taxLiens);
+
+        if (result != 18) {
+            // La fscanf non ha letto tutti i campi correttamente
+            fprintf(stderr, "Errore nella lettura della riga %d\n", i + 1);
+            break;
+        }
     }
 }
 //idk if it is right
 void printDataset(struct credit ar[], int ar_length) {
-    for(int i = 1; i <= ar_length; i++) {
+    for(int i = 0; i < ar_length; i++) {
         printf("\n%s,%s,%s,%d,%s,%d,%d,%s,%s,%s,%f,%f,%f,%d,%d,%d,%d,%d,%d", \
-                ar[i-1].loanID, ar[i-1].customerID, ar[i-1].loanStatus, ar[i-1].currentLoanAmount, ar[i-1].term, ar[i-1].creditScore, ar[i-1].annualIncome,     \
-                ar[i-1].yearJob, ar[i-1].homeOwnership, ar[i-1].purpose, ar[i-1].monthlyDebt, ar[i-1].yearsOfCreditHistory, ar[i-1].monthsSinceLastDelinquent,  \
-                ar[i-1].numberOfOpenAccounts, ar[i-1].numberOfCreditProblems, ar[i-1].currentCreditBalance, ar[i-1].maximumOpenCredit, ar[i-1].bankruptcies,    \
-                ar[i-1].taxLiens);
+                ar[i].loanID, ar[i].customerID, ar[i].loanStatus, ar[i].currentLoanAmount, ar[i].term, ar[i].creditScore, ar[i].annualIncome,     \
+                ar[i].yearJob, ar[i].homeOwnership, ar[i].purpose, ar[i].monthlyDebt, ar[i].yearsOfCreditHistory, ar[i].monthsSinceLastDelinquent,  \
+                ar[i].numberOfOpenAccounts, ar[i].numberOfCreditProblems, ar[i].currentCreditBalance, ar[i].maximumOpenCredit, ar[i].bankruptcies,    \
+                ar[i].taxLiens);
     }
 }
 
@@ -154,7 +165,7 @@ void findValues(struct credit *credito, struct prestito *prestito) {
         prestito->installment = 0;
 
     prestito->log_annual_inc = log(credito->annualIncome);
-    prestito->dti = credito->debtAmount / credito->annualIncome;
+    //prestito->dti = credito->debtAmount / credito->annualIncome;
     prestito->fico = credito->creditScore;
 
     prestito->days_with_cr_line;
