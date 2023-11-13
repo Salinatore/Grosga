@@ -38,6 +38,7 @@ struct credit {
     int bankruptcies;
     int taxLiens;
 };
+
 struct prestito {
     bool credit_policy; //1 se il cliente soddisfa i criteri di sottoscrizione del credito; 0 altrimenti
     char purpose[MAX]; //Lo scopo del prestito
@@ -78,7 +79,6 @@ int main() { //TODO: da controllare
         for(int i = 0; i < LINES; i++) {
             findValues(&data[i], &database[i]);
         }
-
 
 
 
