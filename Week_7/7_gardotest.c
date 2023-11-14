@@ -5,7 +5,7 @@
 
 #define PURPOSE_MAX 20 //max string length of purpose field
 #define MAX_ROWS 10000 //number of row in the data file
-#define DEVIDER ","
+#define DEVIDER "," //
 #define MAX_ROW_LENGTH 1000
 
 
