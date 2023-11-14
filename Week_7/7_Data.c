@@ -17,28 +17,6 @@
 #define MAX 256
 #define NA false //not-available
 
-/* Store csv data */
-struct credit {
-    char loanID[ID_LENGTH];
-    char customerID[ID_LENGTH];
-    char loanStatus[MAX];
-    int currentLoanAmount;
-    char term[MAX];
-    int creditScore;
-    int annualIncome;
-    char yearJob[MAX];
-    char homeOwnership[MAX];
-    char purpose[MAX];
-    float monthlyDebt;
-    float yearsOfCreditHistory;
-    float monthsSinceLastDelinquent;
-    int numberOfOpenAccounts;
-    int numberOfCreditProblems;
-    int currentCreditBalance;
-    int maximumOpenCredit;
-    int bankruptcies;
-    int taxLiens;
-};
 struct prestito {
     bool credit_policy; //1 se il cliente soddisfa i criteri di sottoscrizione del credito; 0 altrimenti
     char purpose[MAX]; //Lo scopo del prestito
@@ -179,4 +157,5 @@ void findValues(struct credit *credito, struct prestito *prestito) {
     prestito->pub_rec = credito->bankruptcies;
     prestito->not_fully_paid = (credito->currentLoanAmount != 0);
 }
+
 
