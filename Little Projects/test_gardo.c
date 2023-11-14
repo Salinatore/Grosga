@@ -30,7 +30,7 @@ void print_list(node *list_node){
         print_list(list_node->next);
     }
     else
-        printf("EXIT");
+        printf("EXIT"); //pls never
 }
 
 node *add_node_to_tail(node *tail){
