@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 #define PURPOSE_MAX 20 //max string length of purpose field
 #define MAX_ROWS 10000 //number of row in the data file
 #define DEVIDER ","
 #define MAX_ROW_LENGTH 1000
-
+#define PERCENT (75/100)
 
 typedef struct user{
     bool credit_policy;
@@ -26,28 +27,40 @@ typedef struct user{
     bool not_fully_paid;
 }USER;
 
-typedef USER* USER_P;
-
-void fill_borrowers_array(USER borrowers[], FILE* input_file);
+int load_dataset(char file_path[], USER users[]);
 USER row_to_user(char row[]);
-int load_dataset(char path[], USER users[]);
 bool read_line(char row[MAX_ROW_LENGTH], FILE* data);
-double standardize(double number, double max, double min);
+int* KNN_algorithm(USER test[], USER train[], int n_rows, int const K); //return a pointer to an array of 1 or 0
 
 int main(){
-    //open file to read
-    //char* path = "Week_7/loan_data.csv";
     USER users[MAX_ROWS];
 
-    int n_rows = load_dataset(path, users);
+    char file_path[] = {"Week_7/loan_data.csv"}; //
+
+    int n_rows = load_dataset(file_path, users);
+
+    int separator = n_rows * PERCENT;
+    printf("%d, %d", n_rows, separator);
+
+    //creation of two arrays, one used as test and the second as train
+    USER test[separator], train[n_rows-separator];
+
+    for(int i = 0, i_train = 0; i < n_rows; i++){
+        if(i < separator){
+            test[i] = users[i];
+        }
+        else{
+            train[i_train] = users[i];
+            i_train++;
+        }
+    }
+
+
+
 }
 
-double standardize(double number, double max, double min){
-    return (number - min)/(max - min);
-}
-
-int load_dataset(char path[], USER users[]){
-    FILE* data = fopen(path, "r");
+int load_dataset(char file_path[], USER users[]){
+    FILE* data = fopen(file_path, "r");
     int n_rows = 0;
 
     if(data == NULL){
@@ -96,7 +109,7 @@ bool read_line(char row[MAX_ROW_LENGTH], FILE* data){
     int row_size = 0;
 
     if(character == EOF)
-        return false;
+        return false;   //return false when we read all the file
 
     while(character != '\r' && character != '\n' && row_size < MAX_ROW_LENGTH - 1){
         row[row_size] = character;
@@ -105,6 +118,36 @@ bool read_line(char row[MAX_ROW_LENGTH], FILE* data){
     }
     row[row_size] = '\0';
 
-    return true;
+    return true; //return true otherwise
 }
 
+int* KNN_algorithm(USER test[], USER train[], int n_rows, int const K){
+    int* results = (int*) malloc(sizeof(int)*n_rows);
+
+    int i_train = n_rows - (n_rows*PERCENT);
+
+    for(int i = 0; i < i_train; i++){
+
+    }
+}
+
+double euclidean_distance(USER test, USER train){
+    sqrt(pow(test. , 2));
+}
+
+/**
+    bool credit_policy;
+    char* purpose;
+    double int_rate;
+    double installment;
+    double log_annual_inc;
+    double dti;
+    unsigned int fico;
+    double days_with_cr_line;
+    double revol_bal;
+    double revol_util;
+    unsigned int inq_last_6mths;
+    unsigned int delinq_2yrs;
+    unsigned int pub_rec;
+    bool not_fully_paid;
+*/
