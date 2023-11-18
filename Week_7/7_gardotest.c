@@ -8,7 +8,7 @@
 #define MAX_ROWS 10000 //number of row in the data file
 #define DEVIDER ","
 #define MAX_ROW_LENGTH 1000
-#define PERCENT (75/100)
+#define PERCENT 0.75
 
 typedef struct user{
     bool credit_policy;
@@ -28,46 +28,28 @@ typedef struct user{
 }USER;
 
 int load_dataset(char file_path[], USER users[], USER* max, USER* min);
-USER row_to_user(char row[], USER* max, USER* min);
+USER row_to_user(char row[], USER* max, USER* min, bool* is_first_time);
 bool read_line(char row[MAX_ROW_LENGTH], FILE* data);
 int* KNN_algorithm(USER test[], USER train[], int n_rows, int const K); //return a pointer to an array of 1 or 0
 void normalize_user(USER* user,int n_rows, USER* max, USER* min);
+double euclidean_distance(USER test, USER train);
 
 int main(){
     USER users[MAX_ROWS];
     USER max, min;
 
-    char file_path[] = {"Week_7/loan_data.csv"}; //
+    char file_path[] = {"Week_7/loan_data.csv"};
 
     int n_rows = load_dataset(file_path, users, &max, &min);
 
-    int separator = n_rows * PERCENT;
-    printf("%d, %d --", n_rows, separator);
-
     normalize_user(users, n_rows, &max, &min);
-
-    //creation of two arrays, one used as test and the second as train
-    USER test[separator], train[n_rows-separator];
-
-    for(int i = 0, i_train = 0; i < n_rows; i++){
-        if(i < separator){
-            test[i] = users[i];
-
-        }
-        else{
-            train[i_train] = users[i];
-            i_train++;
-        }
-    }
-
-    for(int i = 0; i < n_rows; i++)
-        printf(" %f", users[i].installment);
 
 }
 
 int load_dataset(char file_path[], USER users[], USER* max, USER* min){
     FILE* data = fopen(file_path, "r");
     int n_rows = 0;
+    bool is_first_time = true;
 
     if(data == NULL){
         perror("Error opening file");
@@ -76,10 +58,10 @@ int load_dataset(char file_path[], USER users[], USER* max, USER* min){
 
     char row[MAX_ROW_LENGTH];
 
-    read_line(row, data);
+    read_line(row, data); //to skip the first row
 
     while(read_line(row, data) && n_rows < MAX_ROWS){
-        users[n_rows] = row_to_user(row, max, min);
+        users[n_rows] = row_to_user(row, max, min, &is_first_time);
         n_rows++;
     }
 
@@ -88,93 +70,96 @@ int load_dataset(char file_path[], USER users[], USER* max, USER* min){
     return n_rows;
 }
 
-USER row_to_user(char row[], USER* max, USER* min){
+USER row_to_user(char row[], USER* max, USER* min, bool* is_first_time){
     USER user;
     char* purpose = (char*) malloc(PURPOSE_MAX);
 
     user.credit_policy = atoi(strtok(row, DEVIDER));
-    if(user.credit_policy > max->credit_policy)
+    if(user.credit_policy > max->credit_policy || *is_first_time == true)
         max->credit_policy = user.credit_policy;
-    if(user.credit_policy < min->credit_policy)
+    if(user.credit_policy < min->credit_policy || *is_first_time == true)
         min->credit_policy = user.credit_policy;
 
     user.purpose = strcpy(purpose, strtok(NULL, DEVIDER));
-    if(user.purpose > max->purpose)
+    if(user.purpose > max->purpose || *is_first_time == true)
         max->purpose = user.purpose;
-    if(user.purpose < min->purpose)
+    if(user.purpose < min->purpose || *is_first_time == true)
         min->purpose = user.purpose;
 
     user.int_rate = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.int_rate > max->int_rate)
+    if(user.int_rate > max->int_rate || *is_first_time == true)
         max->int_rate = user.int_rate;
-    if(user.int_rate < min->int_rate)
+    if(user.int_rate < min->int_rate || *is_first_time == true)
         min->int_rate = user.int_rate;
 
     user.installment = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.installment > max->installment)
+    if(user.installment > max->installment || *is_first_time == true)
         max->installment = user.installment;
-    if(user.installment < min->installment)
+    if(user.installment < min->installment || *is_first_time == true)
         min->installment = user.installment;
 
     user.log_annual_inc = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.log_annual_inc > max->log_annual_inc)
+    if(user.log_annual_inc > max->log_annual_inc || *is_first_time == true)
         max->log_annual_inc = user.log_annual_inc;
-    if(user.log_annual_inc < min->log_annual_inc)
+    if(user.log_annual_inc < min->log_annual_inc || *is_first_time == true)
         min->log_annual_inc = user.log_annual_inc;
 
     user.dti = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.dti > max->dti)
+    if(user.dti > max->dti || *is_first_time == true)
         max->dti = user.dti;
-    if(user.dti < min->dti)
+    if(user.dti < min->dti || *is_first_time == true)
         min->dti = user.dti;
 
     user.fico = atoi(strtok(NULL, DEVIDER));
-    if(user.fico > max->fico)
+    if(user.fico > max->fico || *is_first_time == true)
         max->fico = user.fico;
-    if(user.fico < min->fico)
+    if(user.fico < min->fico || *is_first_time == true)
         min->fico = user.fico;
 
     user.days_with_cr_line = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.days_with_cr_line > max->days_with_cr_line)
+    if(user.days_with_cr_line > max->days_with_cr_line || *is_first_time == true)
         max->days_with_cr_line = user.days_with_cr_line;
-    if(user.days_with_cr_line < min->days_with_cr_line)
+    if(user.days_with_cr_line < min->days_with_cr_line || *is_first_time == true)
         min->days_with_cr_line = user.days_with_cr_line;
 
     user.revol_bal = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.revol_bal > max->revol_bal)
+    if(user.revol_bal > max->revol_bal || *is_first_time == true)
         max->revol_bal = user.revol_bal;
-    if(user.revol_bal < min->revol_bal)
+    if(user.revol_bal < min->revol_bal || *is_first_time == true)
         min->revol_bal = user.revol_bal;
 
     user.revol_util = strtod(strtok(NULL, DEVIDER), NULL);
-    if(user.revol_util > max->revol_util)
+    if(user.revol_util > max->revol_util || *is_first_time == true)
         max->revol_util = user.revol_util;
-    if(user.revol_util < min->revol_util)
+    if(user.revol_util < min->revol_util || *is_first_time == true)
         min->revol_util = user.revol_util;
 
     user.inq_last_6mths = atoi(strtok(NULL, DEVIDER));
-    if(user.inq_last_6mths > max->inq_last_6mths)
+    if(user.inq_last_6mths > max->inq_last_6mths || *is_first_time == true)
         max->inq_last_6mths = user.inq_last_6mths;
-    if(user.inq_last_6mths < min->inq_last_6mths)
+    if(user.inq_last_6mths < min->inq_last_6mths || *is_first_time == true)
         min->inq_last_6mths = user.inq_last_6mths;
 
     user.delinq_2yrs = atoi(strtok(NULL, DEVIDER));
-    if(user.delinq_2yrs > max->delinq_2yrs)
+    if(user.delinq_2yrs > max->delinq_2yrs || *is_first_time == true)
         max->delinq_2yrs = user.delinq_2yrs;
-    if(user.delinq_2yrs < min->delinq_2yrs)
+    if(user.delinq_2yrs < min->delinq_2yrs || *is_first_time == true)
         min->delinq_2yrs = user.delinq_2yrs;
 
     user.pub_rec = atoi(strtok(NULL, DEVIDER));
-    if(user.pub_rec > max->pub_rec)
+    if(user.pub_rec > max->pub_rec || *is_first_time == true)
         max->pub_rec = user.pub_rec;
-    if(user.pub_rec < min->pub_rec)
+    if(user.pub_rec < min->pub_rec || *is_first_time == true)
         min->pub_rec = user.pub_rec;
 
     user.not_fully_paid = atoi(strtok(NULL, DEVIDER));
-    if(user.not_fully_paid > max->not_fully_paid)
+    if(user.not_fully_paid > max->not_fully_paid || *is_first_time == true)
         max->not_fully_paid = user.not_fully_paid;
-    if(user.not_fully_paid < min->not_fully_paid)
+    if(user.not_fully_paid < min->not_fully_paid || *is_first_time == true)
         min->not_fully_paid = user.not_fully_paid;
+
+    if(*is_first_time == true)
+        *is_first_time = false;
 
     return user;
 }
@@ -212,18 +197,37 @@ void normalize_user(USER* user, int n_rows, USER* max, USER* min){
         user[i].pub_rec = (user[i].pub_rec - min->pub_rec) / (max->pub_rec - min->pub_rec);
     }
 }
-/*
-int* KNN_algorithm(USER test[], USER train[], int n_rows, int const K){
+
+int* KNN_algorithm(USER user[], int n_rows, int const K){
     int* results = (int*) malloc(sizeof(int)*n_rows);
 
-    int i_train = n_rows - (n_rows*PERCENT);
+    //creation of two separate array
+    int n_test = n_rows * PERCENT;
+    int n_train = n_rows-n_test;
+    USER test[n_test], train[n_train];
 
-    for(int i = 0; i < i_train; i++){
-
+    for(int i = 0, i_train = 0; i < n_rows; i++){
+        if(i < n_test){
+            test[i] = user[i];
+        }
+        else{
+            train[i_train] = user[i];
+            i_train++;
+        }
     }
+
+    //alg
+    for(int i_train = 0; i_train < n_train; i_train++){
+        for(int i_test = 0; i_test < n_rows; i_test++){
+            //
+        }
+        //
+    }
+
+    return results;
 }
 
-double euclidean_distance(USER test, USER train) {
-    sqrt(pow(test., 2));
+double euclidean_distance(USER test, USER train){
+    return (pow(test.int_rate + train.int_rate, 2) + pow(test.dti + train.dti, 2) + pow(test.fico + train.fico, 2));
 }
-*/
+
