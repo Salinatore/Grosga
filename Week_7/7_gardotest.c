@@ -41,9 +41,8 @@ int main(){
 
     int n_rows = load_dataset(file_path, users, &max, &min);
 
-
     int separator = n_rows * PERCENT;
-    printf("%d, %d", n_rows, separator);
+    printf("%d, %d --", n_rows, separator);
 
     normalize_user(users, n_rows, &max, &min);
 
@@ -61,7 +60,8 @@ int main(){
         }
     }
 
-    printf(" %f", users[1].installment);
+    for(int i = 0; i < n_rows; i++)
+        printf(" %f", users[i].installment);
 
 }
 
