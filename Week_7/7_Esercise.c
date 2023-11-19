@@ -37,9 +37,10 @@ typedef struct user{
 int load_dataset(char file_path[], USER users[], USER* max, USER* min);
 USER row_to_user(char row[], USER* max, USER* min, bool* is_first_time);
 bool read_line(char row[MAX_ROW_LENGTH], FILE* data);
-int* KNN_algorithm(USER test[], USER train[], int n_rows, int const K); //return a pointer to an array of 1 or 0
+int* KNN_algorithm(USER user[], int n_rows, int const K); //return a pointer to an array of 1 or 0
 void normalize_user(USER* user,int n_rows, USER* max, USER* min);
 double euclidean_distance(USER test, USER train);
+double biggest_value(double array[], int const K);
 
 int main(){
     USER users[MAX_ROWS];
@@ -206,8 +207,6 @@ void normalize_user(USER* user, int n_rows, USER* max, USER* min){
 }
 
 int* KNN_algorithm(USER user[], int n_rows, int const K){
-    int* results = (int*) malloc(sizeof(int)*n_rows);
-
     //creation of two separate array
     int n_test = n_rows * PERCENT;
     int n_train = n_rows-n_test;
@@ -224,9 +223,17 @@ int* KNN_algorithm(USER user[], int n_rows, int const K){
     }
 
     //alg
+    int* results = (int*) malloc(sizeof(int)*n_rows);
+    double cart;
+    double nearest_user[K][2];
+
     for(int i_train = 0; i_train < n_train; i_train++){
         for(int i_test = 0; i_test < n_rows; i_test++){
-            //
+            cart = euclidean_distance(test[i_test], train[i_train]);
+
+            if(cart > biggest_value(nearest_user, K)){
+
+            }
         }
         //
     }
@@ -238,3 +245,15 @@ double euclidean_distance(USER test, USER train){
     return (pow(test.int_rate + train.int_rate, 2) + pow(test.dti + train.dti, 2) + pow(test.fico + train.fico, 2));
 }
 
+double biggest_value(double array[], int const K){
+    double biggest_value = array[0];
+
+    for(int i = 0; i < K; i++){
+        if(array[i] > biggest_value)
+            biggest_value = array[i];
+        else
+            continue;
+    }
+
+    return biggest_value;
+}
