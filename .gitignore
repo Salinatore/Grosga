@@ -5,3 +5,4 @@ bin
 *.app
 *@
 .DS_Store
+compiled
