@@ -92,17 +92,13 @@ USER row_to_user(char row[], USER* max, USER* min, bool* is_first_time){
     USER user;
     char* purpose = (char*) malloc(PURPOSE_MAX);
 
-    user.credit_policy = atoi(strtok(row, DEVIDER));
+    user.credit_policy = (bool) atoi(strtok(row, DEVIDER));
     if(user.credit_policy > max->credit_policy || *is_first_time == true)
         max->credit_policy = user.credit_policy;
     if(user.credit_policy < min->credit_policy || *is_first_time == true)
         min->credit_policy = user.credit_policy;
 
     user.purpose = strcpy(purpose, strtok(NULL, DEVIDER));
-    if(user.purpose > max->purpose || *is_first_time == true)
-        max->purpose = user.purpose;
-    if(user.purpose < min->purpose || *is_first_time == true)
-        min->purpose = user.purpose;
 
     user.int_rate = strtod(strtok(NULL, DEVIDER), NULL);
     if(user.int_rate > max->int_rate || *is_first_time == true)
