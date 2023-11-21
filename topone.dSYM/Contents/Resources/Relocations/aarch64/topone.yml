@@ -1,9 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     topone
-relocations:
-  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _distance, symObjAddr: 0x0, symBinAddr: 0x100003A54, symSize: 0x58 }
-  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _distance, symObjAddr: 0x0, symBinAddr: 0x100003A54, symSize: 0x58 }
-  - { offsetInCU: 0x79, offset: 0x79, size: 0x8, addend: 0x0, symName: _classify, symObjAddr: 0x58, symBinAddr: 0x100003AAC, symSize: 0x310 }
-  - { offsetInCU: 0x196, offset: 0x196, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x368, symBinAddr: 0x100003DBC, symSize: 0xE0 }
-...
