@@ -10,12 +10,14 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
+#include <float.h>
 
 #define PURPOSE_MAX 20 //max string length of purpose field
 #define MAX_ROWS 10000 //number of row in the data file
 #define DEVIDER ","
 #define MAX_ROW_LENGTH 1000
-#define PERCENT 0.75
+#define PERCENT 0.25
+#define POSSIBLE_CASES 2 //credit_policy is 1 or 0
 
 typedef struct user{
     bool credit_policy;
@@ -36,32 +38,55 @@ typedef struct user{
 
 typedef struct user_distance{
     USER user;
-    double euclidean_distance;
-    bool initialize;
-}USER_DISTANCE;
+    double distance;
+} USER_DISTANCE;
 
 int load_dataset(char file_path[], USER users[], USER* max, USER* min);
 USER row_to_user(char row[], USER* max, USER* min, bool* is_first_time);
 bool read_line(char row[MAX_ROW_LENGTH], FILE* data);
-double KNN_algorithm(USER user[], int n_rows, int const K); //return a pointer to an array of 1 or 0
 void normalize_user(USER* user,int n_rows, USER* max, USER* min);
-double euclidean_distance(USER test, USER train);
-double biggest_value(USER_DISTANCE array[], int const K);
-bool add_nearest_test(USER_DISTANCE* nearest_test, USER test, double new_distance, int const K);
-void deinitialize(USER_DISTANCE* nearest_test, int const K);
+void divide_users(USER users[], int n_rows, USER train[], USER test[]);
+void random_divide_user(USER users[], int n_rows, USER train[], USER test[]);
+void radomize_users(USER users[], int n_rows);
+
+bool* KNN_algorithm(USER train[], int n_train, USER test[], int n_test, int const K);
+double euclidean_distance(USER train, USER test);
+double biggest_distance(USER_DISTANCE distances[], int const K);
+void add_distance(USER_DISTANCE* distances, USER user, double distance, int const K);
+void initialize_distances(USER_DISTANCE* nearest_test, int const K);
+void initialize_case_counter(double case_counter[]);
+
+double accuracy(bool* results, USER* test, int n_test);
 
 int main(){
+    srand(5);
+
     USER users[MAX_ROWS];
     USER max, min;
-    int K = 5;
+    int K = 3;
 
     char file_path[] = {"Week_7/loan_data.csv"};
 
     int n_rows = load_dataset(file_path, users, &max, &min);
 
-    normalize_user(users, n_rows, &max, &min);
+    //the normalization would make all the fields equally important
+    //normalize_user(users, n_rows, &max, &min); //normalization makes the KNN alg less accurate
 
-    printf("Precision: %.1f%%", KNN_algorithm(users, n_rows, K)*100);
+    int n_train = n_rows - (n_rows*PERCENT);
+    int n_test = n_rows * PERCENT;
+    USER train[n_train+1], test[n_test+1]; //the +1 is for the loss in the calc of n_train and n_test width
+
+    //the randomness ensure that the test array is not made only by 1 or 0
+    random_divide_user(users, n_rows, train, test);
+
+    //KNN return an array of the prediction made by the algorithm
+    bool* results = KNN_algorithm(train, n_train, test, n_test, K);
+    //accuracy take the array of bool and confront them to the real values of test.credit_policy
+    printf("%f", accuracy(results, test, n_test));
+
+    //just for testing TODO:REMOVE BEFORE DELIVERING
+    bool* all_one = memset(malloc(sizeof(bool) * n_test), 1, n_test);
+    printf("\n\n%f", accuracy(all_one, test, n_test));
 }
 
 int load_dataset(char file_path[], USER users[], USER* max, USER* min){
@@ -212,94 +237,112 @@ void normalize_user(USER* user, int n_rows, USER* max, USER* min){
     }
 }
 
-double KNN_algorithm(USER user[], int n_rows, int const K){
-    //creation of two separate array
+void divide_users(USER users[], int n_rows, USER train[], USER test[]){
     int n_test = n_rows * PERCENT;
-    int n_train = n_rows-n_test;
-    USER test[n_test], train[n_train];
 
     for(int i = 0, i_train = 0; i < n_rows; i++){
         if(i < n_test){
-            test[i] = user[i];
+            test[i] = users[i];
         }
         else{
-            train[i_train] = user[i];
+            train[i_train] = users[i];
             i_train++;
         }
     }
+}
 
-    //alg
-    double results = 0;
-    double cart;
-    USER_DISTANCE nearest_test[K];
-    deinitialize(nearest_test, K);
+void random_divide_user(USER users[], int n_rows, USER train[], USER test[]){
+    radomize_users(users,  n_rows);
 
-    for(int i_train = 0, i_test; i_train < n_train; i_train++){
-        for(i_test = 0; i_test < n_rows; i_test++){
-            cart = euclidean_distance(test[i_test], train[i_train]);
+    divide_users(users, n_rows, train, test);
+}
 
-            if(cart > biggest_value(nearest_test, K)){
-                add_nearest_test(nearest_test, test[i_test], cart, K);
+void radomize_users(USER users[], int n_rows){
+    for(int i = 0; i < n_rows*100; i++){
+        int swap_from = rand() % n_rows;
+        int swap_to = rand() % n_rows;
+
+        USER current_user = users[swap_from];
+        users[swap_from] = users[swap_to];
+        users[swap_to] = current_user;
+    }
+}
+
+bool* KNN_algorithm(USER train[], int n_train, USER test[], int n_test, int const K){
+    bool* results = (bool*) malloc(sizeof(bool) * n_test);
+
+    for(int i_test = 0; i_test < n_test; i_test++){
+        double case_counter[POSSIBLE_CASES];
+        initialize_case_counter(case_counter);
+
+        USER_DISTANCE distances[K];
+        initialize_distances(distances, K);
+
+        double current_distance = DBL_MAX;
+
+        //search of the K nearest
+        for(int i_train = 0; i_train < n_train; i_train++){
+            current_distance = euclidean_distance(train[i_train], test[i_test]);
+            if(current_distance < biggest_distance(distances, K)){
+                add_distance(distances, train[i_train], current_distance, K);
             }
-            else
-                continue;
         }
-        int is_0 = 0, is_1 = 0, train_is = -1;
 
         for(int i = 0; i < K; i++){
-            if(nearest_test[i].user.credit_policy == 0)
-                is_0++;
-            if(nearest_test[i].user.credit_policy == 1)
-                is_1++;
+            case_counter[distances[i].user.credit_policy] += 1/distances[i].distance; //meno presciso con la distanza pesata
+            //case_counter[distances[i].user.credit_policy]++;
         }
-        if(is_0 > is_1)
-            train_is = 0;
-        else
-            train_is = 1;
 
-        if(train_is == train[i_train].credit_policy)
-            results++;
-
-        deinitialize(nearest_test, K);
+        results[i_test] = case_counter[0] > case_counter[1] ? false : true;
     }
 
-    return (double) results/n_rows;
+    return results;
 }
 
-double euclidean_distance(USER test, USER train){
-    return (pow(test.int_rate + train.int_rate, 2) + pow(test.dti + train.dti, 2) + pow(test.fico + train.fico, 2) + pow(test.not_fully_paid + train.not_fully_paid, 2));
+void initialize_case_counter(double case_counter[]){
+    for(int i = 0; i < POSSIBLE_CASES; i++){
+        case_counter[i] = 0;
+    }
 }
 
-double biggest_value(USER_DISTANCE array[], int const K){
-    double biggest_value = array[0].euclidean_distance;
+double euclidean_distance(USER train, USER test){
+    return sqrt(pow(test.int_rate - train.int_rate, 2) + pow(test.dti - train.dti, 2) + pow(test.fico - train.fico, 2) + pow(test.not_fully_paid - train.not_fully_paid, 2) + pow(test.inq_last_6mths - train.inq_last_6mths, 2));
+}
 
+double biggest_distance(USER_DISTANCE distances[], int const K){
+    double biggest_distance = 0;
+
+    for(int i = 0; i < K; i++) {
+        biggest_distance = distances[i].distance > biggest_distance ? distances[i].distance : biggest_distance;
+    }
+    return biggest_distance;
+}
+
+void add_distance(USER_DISTANCE* distances, USER user, double distance, int const K){
+    int biggest_distance_index = 0;
+
+    for(int i = 0; i < K; i++) {
+        biggest_distance_index = distances[i].distance > distances[biggest_distance_index].distance ? i : biggest_distance_index;
+    }
+
+    distances[biggest_distance_index].user = user;
+    distances[biggest_distance_index].distance = distance;
+}
+
+void initialize_distances(USER_DISTANCE* nearest_test, int const K){
     for(int i = 0; i < K; i++){
-        if(array[i].euclidean_distance > biggest_value || array->initialize == false) {
-            biggest_value = array[i].euclidean_distance;
-            array->initialize = true;
-        }
-        else
-            continue;
+        nearest_test[i].distance = DBL_MAX;
     }
-
-    return biggest_value;
 }
 
-bool add_nearest_test(USER_DISTANCE* nearest_test, USER test, double new_distance, int const K){
-    bool found_bigger = false;
+double accuracy(bool* results, USER* test, int n_test){
+    double true_positive = 0;
 
-    for(int i = 0; i < K; i++){
-        if(nearest_test[i].euclidean_distance < new_distance){
-            found_bigger = true;
-            nearest_test->euclidean_distance = new_distance;
-            nearest_test->user = test;
+    for(int i_test = 0; i_test < n_test; i_test++){
+        if(results[i_test] == test[i_test].credit_policy){
+            true_positive++;
         }
     }
 
-    return found_bigger;
-}
-
-void deinitialize(USER_DISTANCE* nearest_test, int const K){
-    for(int i = 0; i < K; i++)
-        nearest_test[i].initialize = false;
+    return true_positive / n_test;
 }
