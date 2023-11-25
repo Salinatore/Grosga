@@ -79,14 +79,10 @@ int main(){
     //the randomness ensure that the test array is not made only by 1 or 0
     random_divide_user(users, n_rows, train, test);
 
-    //KNN return an array of the prediction made by the algorithm
+    //KNN return an array of the prediction made by the algorithm (Euclidean distance is currently calculated in 5 dimensions)
     bool* results = KNN_algorithm(train, n_train, test, n_test, K);
     //accuracy take the array of bool and confront them to the real values of test.credit_policy
-    printf("%f", accuracy(results, test, n_test));
-
-    //just for testing TODO:REMOVE BEFORE DELIVERING
-    bool* all_one = memset(malloc(sizeof(bool) * n_test), 1, n_test);
-    printf("\n\n%f", accuracy(all_one, test, n_test));
+    printf("Accuracy: %.2f %%", accuracy(results, test, n_test)*100);
 }
 
 int load_dataset(char file_path[], USER users[], USER* max, USER* min){
@@ -289,8 +285,7 @@ bool* KNN_algorithm(USER train[], int n_train, USER test[], int n_test, int cons
         }
 
         for(int i = 0; i < K; i++){
-            case_counter[distances[i].user.credit_policy] += 1/distances[i].distance; //meno presciso con la distanza pesata
-            //case_counter[distances[i].user.credit_policy]++;
+            case_counter[distances[i].user.not_fully_paid]++;
         }
 
         results[i_test] = case_counter[0] > case_counter[1] ? false : true;
@@ -339,7 +334,7 @@ double accuracy(bool* results, USER* test, int n_test){
     double true_positive = 0;
 
     for(int i_test = 0; i_test < n_test; i_test++){
-        if(results[i_test] == test[i_test].credit_policy){
+        if(results[i_test] == test[i_test].not_fully_paid){
             true_positive++;
         }
     }
