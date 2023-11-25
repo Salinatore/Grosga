@@ -59,7 +59,7 @@ void initialize_case_counter(double case_counter[]);
 double accuracy(bool* results, USER* test, int n_test);
 
 int main(){
-    srand(5);
+    srand(5); //to simulate similar results
 
     USER users[MAX_ROWS];
     USER max, min;
