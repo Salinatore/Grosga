@@ -4,6 +4,8 @@ bin
 *.out
 *.app
 *@
-.DS_Store
-compiled
+*.DS_Store
+/build/
+compiled/
+.env
 .dSYM
