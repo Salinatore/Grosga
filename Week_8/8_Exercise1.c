@@ -32,6 +32,7 @@ typedef struct {
 bool aspettiamo(Ristorante);
 int get_filelength(const char *nomeFile);
 void print_data(Ristorante *data, int data_length);
+Ristorante get_info(Ristorante *data);
 
 int main(int argc, char *argv[]) {
     char retry;
@@ -62,7 +63,7 @@ int main(int argc, char *argv[]) {
             fgets(path, sizeof(path), stdin);
 
             //remove \n
-            if (path[strlen(path) - 1] == '\n')
+            if(path[strlen(path) - 1] == '\n')
                 path[strlen(path) - 1] = '\0';
 
             if(strcmp("exit", path) == 0) {
@@ -81,9 +82,13 @@ int main(int argc, char *argv[]) {
 
         size = get_filelength(path);
         dataset = (Ristorante *)malloc( size * sizeof(Ristorante));
+        if(dataset == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
         int i = 0;
         char ch[MAX];
-        while (fscanf(file, "%hhu %hhu %hhu %hhu %u %s %hhu %hhu %s %u",
+        while(fscanf(file, "%hhu %hhu %hhu %hhu %u %s %hhu %hhu %s %u",
                       (unsigned char*)&dataset[i].alternativa,
                       (unsigned char*)&dataset[i].bar,
                       (unsigned char*)&dataset[i].giorno,
@@ -102,6 +107,7 @@ int main(int argc, char *argv[]) {
                 dataset[i].prezzo = 3;
             i++;
         }
+        fclose(file);
     } else {
         //da terminale
         int n;
@@ -111,64 +117,27 @@ int main(int argc, char *argv[]) {
 
         size = n;
         dataset = (Ristorante *)malloc(size * sizeof(Ristorante));
+        if(dataset == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
         for(int i = 0; i < n; ++i) {
-            printf("\nC’e' un ristorante nei paraggi (1: vero, 0: falso)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].alternativa);
-
-            printf("\nIl ristorante ha un’area bar per l’attesa (1: vero, 0: falso)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].bar);
-
-            printf("\nGiorno della settimana in cui si vuole andare al ristorante (1 se venerdì oppure sabato, 0 diversamente)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].giorno);
-
-            printf("\nSiamo affamati (1: vero, 0: falso)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].fame);
-
-            printf("\nQuante persone sono presenti nel ristorante (0:nessuno, 1:qualcuno, 2:pieno)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].affollato);
-
-            char costo[3];
-            printf("\nCategoria di costo del ristorante ($, $$, $$$)? ");
-            fflush(stdin);
-            scanf("%c", costo);
-
-            if(strcmp("$", costo) == 0) {
-                dataset[i].prezzo = 1;
-            } else if(strcmp("$$", costo) == 0) {
-                dataset[i].prezzo = 2;
-            } else if(strcmp("$$$", costo) == 0) {
-                dataset[i].prezzo = 3;
-            }
-
-            printf("\nFuori sta piovendo (1: vero, 0: falso)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].pioggia);
-
-            printf("\nAbbiamo prenotato (1: vero, 0: falso)? ");
-            fflush(stdin);
-            scanf("%1d", &dataset[i].prenotazione);
-
-            printf("\nTipo di ristorante (italiano, francese, fast-food, thai)? ");
-            fflush(stdin);
-            fgets(dataset[i].tipo, sizeof(dataset[i].tipo), stdin);
-            if (dataset[i].tipo[strlen(dataset[i].tipo) - 1] == '\n')
-                dataset[i].tipo[strlen(dataset[i].tipo) - 1] = '\0';
-
-            printf("\nStima del tempo di attesa? ");
-            fflush(stdin);
-            scanf("%d", &dataset[i].attesa_stimata);
+            get_info(&dataset[i]);
         }
     }
 
     do {
         print_data(dataset, size);
+
         /** TEST **/
         printf(H1 "\n\nTESTING" RESET);
+        size++;
+        dataset = (Ristorante *)realloc(dataset, size * sizeof(Ristorante));
+        if(dataset == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
+        get_info(&dataset[size-1]); //add new info
 
         /*
         bool risultato = aspettiamo();
@@ -177,8 +146,6 @@ int main(int argc, char *argv[]) {
         else
             printf("\nCambiamo ristorante");
         */
-
-
 
 
         do {
@@ -226,4 +193,57 @@ void print_data(Ristorante *data, int data_length) {
         printf("\n%d %d %d %d %d %d %d %d %s %d", data[i].alternativa, data[i].bar, data[i].giorno, data[i].fame,
                data[i].affollato, data[i].prezzo, data[i].pioggia, data[i].prenotazione, data[i].tipo,
                data[i].attesa_stimata);
+}
+
+Ristorante get_info(Ristorante *data) {
+    printf("\nC’e' un ristorante nei paraggi (1: vero, 0: falso)? ");
+    fflush(stdin);
+    scanf("%1d", &data->alternativa);
+
+    printf("\nIl ristorante ha un’area bar per l’attesa (1: vero, 0: falso)? ");
+    fflush(stdin);
+    scanf("%1d", &data->bar);
+
+    printf("\nGiorno della settimana in cui si vuole andare al ristorante (1 se venerdì oppure sabato, 0 diversamente)? ");
+    fflush(stdin);
+    scanf("%1d", &data->giorno);
+
+    printf("\nSiamo affamati (1: vero, 0: falso)? ");
+    fflush(stdin);
+    scanf("%1d", &data->fame);
+
+    printf("\nQuante persone sono presenti nel ristorante (0:nessuno, 1:qualcuno, 2:pieno)? ");
+    fflush(stdin);
+    scanf("%1d", &data->affollato);
+
+    char costo[MAX];
+    printf("\nCategoria di costo del ristorante ($, $$, $$$)? ");
+    fflush(stdin);
+    scanf("%s", costo);
+
+    if(strcmp("$", costo) == 0) {
+        data->prezzo = 1;
+    } else if(strcmp("$$", costo) == 0) {
+        data->prezzo = 2;
+    } else if(strcmp("$$$", costo) == 0) {
+        data->prezzo = 3;
+    }
+
+    printf("\nFuori sta piovendo (1: vero, 0: falso)? ");
+    fflush(stdin);
+    scanf("%1d", &data->pioggia);
+
+    printf("\nAbbiamo prenotato (1: vero, 0: falso)? ");
+    fflush(stdin);
+    scanf("%1d", &data->prenotazione);
+
+    printf("\nTipo di ristorante (italiano, francese, fast-food, thai)? ");
+    fflush(stdin);
+    fgets(data->tipo, sizeof(data->tipo), stdin);
+    if (data->tipo[strlen(data->tipo) - 1] == '\n')
+        data->tipo[strlen(data->tipo) - 1] = '\0';
+
+    printf("\nStima del tempo di attesa? ");
+    fflush(stdin);
+    scanf("%d", &data->attesa_stimata);
 }
