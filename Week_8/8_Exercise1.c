@@ -36,6 +36,7 @@ int main() {
         int scelta;
         do {
             printf("\n1: File\n2: Terminale\nCome vuoi inserire i dati: ");
+            fflush(stdin);
             scanf("%1d", &scelta);
             if(scelta != 1 && scelta != 2)
                 printf("Inserisci un'opzione valida!\n");
