@@ -13,6 +13,7 @@
 #define WARNING "\x1b[31m"
 #define RESET "\x1b[0m"
 #define PATH "\x1b[36m"
+#define H1 "\e[1;5m"
 
 typedef struct {
     bool alternativa; //c’è un ristorante nei paraggi (vero, falso)
@@ -40,6 +41,8 @@ int main() {
                 printf("Inserisci un'opzione valida!\n");
         } while(scelta != 1 && scelta != 2);
 
+        /** TRAINING **/
+        printf(H1 "\nTRAINING" RESET);
         if(scelta == 1) {
             //da file
             char path[MAX];
@@ -48,28 +51,48 @@ int main() {
             do {
                 printf(WARNING "\nIl file deve riportare i valori separati da uno spazio e avere un'estensione .txt" RESET);
 
-                printf("\nInserisci il path del file .txt: ");
+                printf("\nInserisci il path del file .txt ('exit' per terminare): ");
                 fflush(stdin);
                 fgets(path, sizeof(path), stdin);
 
                 //remove \n
-                if (path[strlen(path) - 1] == '\n') {
+                if (path[strlen(path) - 1] == '\n')
                     path[strlen(path) - 1] = '\0';
+
+                if(strcmp("exit", path) == 0) {
+                    fclose(file);
+                    printf("\nTerminato con successo ...");
+                    return 0;
                 }
 
                 if((file = fopen(path, "r")) != NULL) {
                     printf("Utilizzo il file: " PATH "%s\n" RESET, path);
+                    break;
                 } else {
                     printf("Impossibile trovare il file: " PATH "%s\n" RESET, path);
                 }
             } while(file == NULL);
 
+            //TODO read file
+
+
             fclose(file);
         } else {
             //da terminale
+            int n;
+            printf("\nInserisci il numero di");
+            for (int i = 0; i < n; ++i) {
+
+            }
         }
 
-        /*if(aspettiamo())
+        /** TEST **/
+        printf(H1 "\nTESTING" RESET);
+
+
+        /*
+        bool risultato = aspettiamo();
+        if(risultato)
             printf("\nAspettiamo");
         else
             printf("\nCambiamo ristorante");
