@@ -29,7 +29,7 @@ typedef struct {
     unsigned int attesa_stimata; //stima del tempo di attesa (<10, 10-29, 30-60, >60)
 } Ristorante;
 
-bool aspettiamo(Ristorante);
+bool aspettiamo(Ristorante *data, int length);
 int get_filelength(const char *nomeFile);
 void print_data(Ristorante *data, int data_length);
 Ristorante get_info(Ristorante *data);
@@ -139,14 +139,16 @@ int main(int argc, char *argv[]) {
         }
         get_info(&dataset[size-1]); //add new info
 
-        /*
-        bool risultato = aspettiamo();
+
+        bool risultato = aspettiamo(dataset, size);
         if(risultato)
             printf("\nAspettiamo");
         else
             printf("\nCambiamo ristorante");
-        */
-
+        char result;
+        printf("\nIn risultato e' corretto (Y/n)? ");
+        fflush(stdin);
+        scanf("%1c", result);
 
         do {
             printf("\nVuoi riprovare (Y/n)? ");
@@ -162,10 +164,56 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
 }
 
-bool aspettiamo(Ristorante) {
-    bool response;
+bool aspettiamo(Ristorante *data, int length) {
+    Ristorante h = data[0];
 
-    return response;
+    for(int i = 1; i < length-1; ++i) {
+        if(h.alternativa != data[i].alternativa)
+           h.alternativa = NULL;
+        if(h.bar != data[i].bar)
+            h.bar = NULL;
+        if(h.giorno != data[i].giorno)
+            h.giorno = NULL;
+        if(h.fame != data[i].fame)
+            h.fame = NULL;
+        if(h.affollato != data[i].affollato)
+            h.affollato = (unsigned int) NULL;
+        if(h.prezzo != data[i].prezzo)
+            h.prezzo = (unsigned int) NULL;
+        if(h.pioggia != data[i].pioggia)
+            h.pioggia = NULL;
+        if(h.prenotazione != data[i].prenotazione)
+            h.prenotazione = NULL;
+        if (h.tipo != data[i].prenotazione)
+            *h.tipo = (char)NULL;
+        if(h.attesa_stimata != data[i].attesa_stimata)
+            h.attesa_stimata = (unsigned int) NULL;
+    }
+    int count = 0;
+    if(h.alternativa == data[length-1].alternativa)
+        count++;
+    if(h.bar == data[length-1].bar)
+        count++;
+    if(h.giorno == data[length-1].giorno)
+        count++;
+    if(h.fame == data[length-1].fame)
+        count++;
+    if(h.affollato == data[length-1].affollato)
+        count++;
+    if(h.prezzo == data[length-1].prezzo)
+        count++;
+    if(h.pioggia == data[length-1].pioggia)
+        count++;
+    if(h.prenotazione == data[length-1].prenotazione)
+        count++;
+    if(strcmp(h.tipo, data[length-1].tipo) == 0)
+        count++;
+    if(h.attesa_stimata == data[length-1].attesa_stimata)
+        count++;
+
+    if(count > 3)
+        return true;
+    return false;
 }
 
 int get_filelength(const char *nomeFile) {
